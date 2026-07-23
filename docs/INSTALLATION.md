@@ -1,10 +1,10 @@
-# HOTASBridge Installation
+# Elka HOTAS Bridge Installation
 
 ## Supported Environment
 
 The current installer targets 64-bit Windows 10 and Windows 11. The framework-dependent package requires the .NET 10 Desktop Runtime. A separate Visual C++ runtime is not required by the current managed package.
 
-ViGEmBus is optional for application startup. It is required only when HOTASBridge must expose the generated state as a system-visible Xbox 360 controller.
+ViGEmBus is optional for application startup. It is required only when Elka HOTAS Bridge must expose the generated state as a system-visible Xbox 360 controller.
 
 ## Installation Modes
 
@@ -23,7 +23,7 @@ All modes use `%LOCALAPPDATA%\HOTASBridge` for user data in the current release.
 1. Run the signed `HOTASBridge-<version>-Setup.exe` package.
 2. Review Windows, .NET, Visual C++, ViGEmBus, and privilege status on the prerequisite page.
 3. Choose per-user or machine-wide installation.
-4. Complete installation and launch HOTASBridge.
+4. Complete installation and launch Elka HOTAS Bridge.
 5. Follow First Run Setup, or choose **Skip setup** and reopen it later from **About**.
 
 The First Run Setup sequence is:

@@ -1,4 +1,4 @@
-# HOTASBridge Release Notes
+# Elka HOTAS Bridge Release Notes
 
 ## 0.26.0-dev - Easy Input and Generated Output Workflow
 

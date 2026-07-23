@@ -1,14 +1,14 @@
-# HOTASBridge User Guide
+# Elka HOTAS Bridge User Guide
 
-## What HOTASBridge Does
+## What Elka HOTAS Bridge Does
 
-HOTASBridge combines controls from one or more Windows HOTAS-class devices and routes configured mappings to a virtual Xbox 360 controller or Windows keyboard output.
+Elka HOTAS Bridge combines controls from one or more Windows HOTAS-class devices and routes configured mappings to a virtual Xbox 360 controller or Windows keyboard output.
 
 ## First Start
 
-1. Start HOTASBridge normally. A new installation opens the skippable **First Run Wizard** after the main window is ready.
+1. Start Elka HOTAS Bridge normally. A new installation opens the skippable **First Run Wizard** after the main window is ready.
 2. Follow the wizard to detect and select devices, choose a profile, test input, create an optional starter mapping, and verify Xbox output.
-3. If ViGEmBus is missing and Xbox output is required, choose **Install Driver** in the wizard. HOTASBridge never installs the kernel driver silently; Windows displays the normal UAC and installer UI.
+3. If ViGEmBus is missing and Xbox output is required, choose **Install Driver** in the wizard. Elka HOTAS Bridge never installs the kernel driver silently; Windows displays the normal UAC and installer UI.
 4. Existing installations skip the wizard automatically. Reopen it later from **About**.
 5. Use `HOTASBridge.App.exe --safe-mode` only when recovering from an output or profile problem; Safe Mode suppresses automatic setup and all outputs.
 
