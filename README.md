@@ -9,12 +9,12 @@ It intentionally does not contain the HOTASBridge source code.
 
 ## Download
 
-Open the GitHub **Releases** page and download one of:
+Open the repository's **Releases** section and select the latest test release:
 
 - `HOTASBridge-0.26.0-Setup.exe` - recommended installer.
 - `HOTASBridge-0.26.0-win-x64.zip` - framework-dependent portable package.
 
-This is a `0.26.0` preview build for Windows 10/11 x64. It requires the
+This is a `0.26.0` test release for Windows 10/11 x64. It requires the
 .NET 10 Desktop Runtime.
 
 ## Package Trust
@@ -47,5 +47,5 @@ never installs or removes it silently.
 
 ## Important
 
-HOTASBridge is still a preview release. Back up important profiles before
+HOTASBridge is still a test release. Back up important profiles before
 upgrading and review the release notes and known limitations before use.
