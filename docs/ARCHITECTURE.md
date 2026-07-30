@@ -59,7 +59,8 @@ See `docs/INPUT_LAYER.md`, `docs/DEVICE_MODEL.md`, and `docs/DEVICE_DISCOVERY.md
 | Freeze/reset/export tools | Complete | Freeze is UI-only; JSON, CSV, and text exporters are Core services. |
 | Mapping preview | Complete | Selected control resolves current profile mapping and transform summary. |
 | Signal Flow Inspector | Complete foundation | Live/freeze telemetry view with source-filtered stages and output/OS boundaries. |
-| Single-step replay/history | Deferred | Interfaces support future work; no recorder exists yet. |
+| Recording/playback/history foundation | Complete | Versioned RuntimeSignal recording, playback, cache history, and OutputAction regression comparison are active. |
+| Interactive single-step replay UI | Deferred | The playback service exists; a frame-by-frame Signal Flow control remains future diagnostics work. |
 
 See `docs/DEVICE_INSPECTOR.md` and `docs/DIAGNOSTICS.md`.
 
@@ -89,7 +90,7 @@ See `docs/TRANSFORM_ENGINE.md` and `docs/TRANSFORMS.md`.
 | Plugin failure isolation | Complete | Manager diagnoses/resets failed plugins and continues dispatching others. |
 | Runtime output state separation | Complete | Plugin/scheduler state is never persisted to profiles. |
 | Output Monitor | Complete | UI consumes only manager diagnostic snapshots, including cumulative ViGEm backend failure evidence. |
-| External plugin SDK/discovery | Deferred | Constructor registration supports future discovery without Mapping Engine changes. |
+| Internal plugin SDK/discovery | Complete foundation | Shared manifests, catalog, compatibility checks, lifecycle, and bounded metadata discovery are active; external assembly loading remains separately gated. |
 
 See `docs/OUTPUT_SYSTEM.md` and `docs/OUTPUT_PLUGINS.md`.
 ## Chapter 13 Requirement Comparison
@@ -131,7 +132,8 @@ See `docs/PLUGIN_SDK.md`, `docs/PLUGIN_API.md`, `docs/PLUGIN_LIFECYCLE.md`, and 
 | Conditions, repeats, variables, runtime state | Complete foundation | Required Boolean/Integer/Float session state and safeguards are active. |
 | Safe cancellation and output cleanup | Complete | Stop/failure/profile/reset/shutdown paths release tracked outputs. |
 | Macro Debugger | Complete initial surface | Shared snapshots provide state, actions, variables, timing, scheduler, and errors. |
-| Visual authoring and future integrations | Deferred | Libraries, visual editing, voice/network/SimConnect, scripting, and AI remain future work. |
+| Visual authoring and local integrations | Complete | Easy and Advanced editors provide recording, ordered keyboard/mouse/Xbox actions, delays, toggle/hold behavior, learned triggers, sequence/ping-pong playback, import, and export. |
+| Voice, network, and SimConnect integrations | Deferred outside current local scope | The Macro Engine remains usable without these optional providers. |
 
 See `docs/MACRO_ENGINE.md`, `docs/MACROS.md`, and `docs/RUNTIME_VARIABLES.md`.
 
@@ -465,10 +467,8 @@ Current producers:
 
 ## Deferred Chapter 2 Work
 
-- DI container registration.
 - External plugin assembly loading, package management, signature enforcement, and sandboxing.
-- Future mouse/DirectInput/vJoy/MIDI/OSC/network plugin implementations.
-- Online plugin repository and Plugin Manager UI.
+- DirectInput, vJoy, MIDI, and OSC plugin implementations. Network and online services are outside the current product scope.
 
 ## Profile Configuration Boundary
 
@@ -629,7 +629,7 @@ Feature settings are application configuration, not profile behavior. Profiles r
 | --- | --- |
 | Incremental roadmap through public 1.0 | Complete documentation |
 | Central Semantic Version and release channels | Complete foundation |
-| Repeatable candidate/release gates | Complete documentation; packaging automation deferred |
+| Repeatable candidate/release gates | Complete tooling; clean-machine acceptance remains manual |
 | Stable/Beta/Experimental/DebugOnly/Hidden flags | Complete |
 | Persisted overrides independent from profiles | Complete, application settings schema v2 |
 | Runtime composition boundaries | Complete for Keyboard, PWM, plugin discovery, Signal Flow, recording/playback, and Debug tools |
@@ -668,7 +668,8 @@ The release-validation script remains outside the runtime. It restores dependenc
 | Reliability acceptance | Automated foundation; physical reconnect/sleep checks pending |
 | Documentation set | Complete foundation |
 | Project Health page | Complete |
-| Installer/signing/clean-machine artifacts | Deferred release blocker |
+| Installer/signing artifacts | Complete; certificate-backed release publication confirmed without repository credentials |
+| Clean-machine install/upgrade/repair/rollback/uninstall evidence | Pending manual release gate |
 
 ## Chapter 18 Visual Node Editor
 
@@ -737,10 +738,10 @@ Hard violations fail the normal gate. Source-pattern checks remain warnings or s
 | Git workflow, commits, pull requests, and reviews | Complete documentation |
 | Testing and dependency expectations | Complete documentation |
 | Architecture dependency and WPF checks | Complete automated gate |
-| DI registration validation | Partial heuristic; full container registration deferred with DI adoption |
-| Public service test validation | Partial heuristic with review suggestions |
+| DI registration validation | Complete for the current Microsoft DI composition root and registered service graph |
+| Public service test validation | Complete automated baseline; the validator currently reports no suggestions |
 | CI integration | Complete through release validation; hosted pipeline remains repository-host dependent |
-| Legacy boundary cleanup | Deferred and tracked; no Chapter 23 runtime rewrite |
+| Legacy boundary cleanup | Complete for the current milestone; future cleanup requires new evidence and a scoped debt item |
 
 ## Easy Input/Output Milestone
 

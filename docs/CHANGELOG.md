@@ -42,7 +42,7 @@
 - Added explicit unsigned-development and fail-closed signed-release modes; production mode rejects absent, invalid, expired, private-key-less, or unsuitable certificates.
 - Added versioned release manifests, standard SHA-256 sums, an independent verifier, and positive/tamper/traversal/checksum/unsigned-release self-tests.
 - Added a disposable-machine-only acceptance runner for retained-build upgrade, deployment-backup rollback, repair, signed installed payloads, preserve-by-default uninstall, and all 16 user-data choice combinations.
-- Kept the production signing identity and clean Windows acceptance evidence as explicit external release blockers.
+- Completed certificate-backed signing and publication without storing signing credentials in source control; clean Windows acceptance evidence remains an explicit external release blocker.
 
 ### Backlog Milestone - Signed Local Profile Packages
 

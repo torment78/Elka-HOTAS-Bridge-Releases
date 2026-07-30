@@ -40,6 +40,8 @@ Both automated test projects use `coverlet.collector`. Chapter 17 release valida
 
 The measured percentage covers Core, Input, Output, Infrastructure, ScriptApi, and Scripting. WPF presentation code is excluded and uses UI Automation plus visual validation. `Test-FirstRunWizardSmoke.ps1` isolates application data, waits for post-wizard navigation readiness, reacquires the current automation tree from the native window handle before retried navigation and ComboBox assertions, validates fresh/existing/Safe Mode policies, and closes through coordinated shutdown.
 
+The Project Health evidence gate requires exact test totals and total instrumented lines. It permits only a five-covered-line and 0.02-percentage-point variance between repeated runs for nondeterministic asynchronous cleanup/status branches.
+
 Run the complete measurement through:
 
 ```powershell

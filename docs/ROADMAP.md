@@ -39,7 +39,7 @@ The architecture milestones completed through Chapter 25 provide:
 | 4. Keyboard Output | SendInput, capture, PWM, scheduler integration | Complete for Version 2 | Tracked cleanup and integration tests |
 | 5. Performance | Central scheduling, queue metrics, profiling, allocation reduction | Complete for Version 2 | Runtime metrics and performance profiler |
 | 6. Advanced Features | Layers, conditions, recording, playback, variables, macros | Complete foundation | Layers, conditions, recording/playback, runtime variables, macros, and diagnostics exist behind stable/Beta boundaries |
-| 7. Public Release | Installer, migration rehearsal, hardware matrix, beta, support docs | In progress | Installer source is active; signing, clean-machine validation, migration rehearsal, and hardware acceptance remain |
+| 7. Public Release | Installer, migration rehearsal, hardware matrix, beta, support docs | In progress | Signed release artifacts exist; clean-machine validation, migration rehearsal, hardware acceptance, soak evidence, and the Version 1 review remain |
 
 ## Near-Term Milestones
 
@@ -99,7 +99,7 @@ The architecture milestones completed through Chapter 25 provide:
 - provide versioned backup/restore scripts and an offline update-service boundary;
 - guide new installations through an optional nine-step First Run Wizard;
 - provide fail-closed Authenticode signing, release manifests, SHA-256 publication, independent verification, and disposable-machine acceptance tooling;
-- retain production certificate use and recorded clean-machine/retained-build acceptance as release gates.
+- retain recorded clean-machine and retained-build acceptance as release gates; certificate-backed signing and publication are complete.
 
 ### 0.23 - Engineering Governance
 

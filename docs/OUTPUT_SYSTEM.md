@@ -112,8 +112,23 @@ Debug/Release builds and existing neutralization/single-batch update tests conti
 ## Deferred
 
 - External plugin assembly loading, SDK packaging, signature enforcement, permissions, and sandboxing.
-- DirectInput, vJoy, MIDI, OSC, and network plugins.
-- Scheduler-backed multi-step macro authoring UI.
+- DirectInput, vJoy, MIDI, and OSC plugins. Network output is outside the current local product scope.
+
+## vJoy Decision
+
+HOTASBridge discovers an already installed vJoy device as a virtual input, but the current release does not create vJoy outputs or install the vJoy driver.
+
+The original vJoy repository documents support only through Windows 10 1803 and redirects newer Windows users to forks. The commonly referenced `jshafer817/vJoy` release describes its driver as attestation-signed for Windows 10 and describes Windows 11 operation only anecdotally. That is not a sufficient maintenance and compatibility contract for silently adding a second kernel-driver dependency.
+
+A future vJoy output must therefore:
+
+- begin with an explicit user requirement that Xbox, keyboard, and mouse outputs cannot satisfy;
+- select a maintained, signed upstream package and record its license and provenance;
+- implement an independent `IOutputPlugin` over `OutputAction`;
+- install only after explicit user confirmation and never remove a shared driver silently;
+- pass the supported-Windows clean-machine, reset, coexistence, upgrade, and uninstall matrix.
+
+See [ADR 0006](adr/0006-defer-vjoy-output-driver.md). ViGEmBus remains the only bundled virtual-controller driver in the current release.
 
 ## Mouse Output Plugin
 

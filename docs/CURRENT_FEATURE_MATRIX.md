@@ -11,7 +11,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Current behavior documented | Complete | See `docs/MIGRATION_PLAN.md` baseline behavior section. |
 | Technical debt documented | Complete | See `docs/TECHNICAL_DEBT.md`. |
 | Existing build verified | Complete | Debug and Release builds passed with zero warnings. |
-| Existing functionality protected | Partial | 360 automated tests protect core, deployment policy, feature policy, AI evidence/approval policy, project health, architecture rules, runtime stores and mapping coordination, Windows input/driver boundaries, graph and macro editing, signal engine/cache/pipeline, input providers/lifecycle/learn mode, device coordination, identity reconciliation, telemetry, persistence, simulation, recording/playback, mapping/output behavior, guided PWM authoring, process-aware profile activation, plugin compatibility/discovery, scripting isolation, and output neutralization; live hardware validation remains manual. |
+| Existing functionality protected | Complete automated foundation | 434 automated tests protect core, deployment policy, feature policy, AI evidence/approval policy, project health, architecture rules, runtime stores and mapping coordination, Windows input/driver boundaries, graph and macro editing, signal engine/cache/pipeline, input providers/lifecycle/learn mode, device coordination, identity reconciliation, telemetry, persistence, simulation, recording/playback, mapping/output behavior, guided PWM authoring, process-aware profile activation, plugin compatibility/discovery, scripting isolation, and output neutralization; live hardware validation remains a separate manual gate. |
 | Migration strategy agreed/documented | Complete | See `docs/MIGRATION_PLAN.md`. |
 | Application dependency injection | Complete foundation | Microsoft DI registers the application service graph in a dedicated composition root; startup and shutdown ordering remain explicit. |
 | Developer Dashboard, Agent Note 001 | Complete | Debug-only diagnostics page enabled through Debug navigation only. |
@@ -41,7 +41,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Macro Engine, Chapter 19 | Complete foundation | RuntimeSignal/system triggers, conditions, actions, central scheduling, variables, safety cleanup, diagnostics, and Beta debugger. |
 | Scripting Engine, Chapter 20 | Complete trusted foundation | Optional Lua runtime, stable Script API, signed packages, local publisher trust, explicit permissions, bounded resources, fail-closed isolation policy, diagnostics, and Script Workbench. |
 | Profile Library, Chapter 21 | Complete local foundation | Searchable metadata, package providers, compatibility preview, templates, comparison, merge, and reports; online services are deferred. |
-| Installer and deployment, Chapter 22 | Complete release-engineering foundation | Compilable Inno package, fail-closed certificate-store signing, signed setup/uninstaller, SHA-256 manifests, independent verification, backup/rollback, and disposable-machine acceptance runner; production identity and clean-machine evidence remain release gates. |
+| Installer and deployment, Chapter 22 | Complete signed release-engineering foundation | Certificate-backed application/setup/uninstaller signing, SHA-256 manifests, independent verification, backup/rollback, and disposable-machine acceptance tooling are active; clean-machine evidence remains a release gate. |
 | First Run Wizard, Agent Note 023 | Complete | Skippable nine-step setup, selected-device input testing, optional starter mapping, explicit driver install, and Xbox output verification. |
 | Coding standards and Architecture Validator, Chapter 23 | Complete foundation | Versioned policy, hard dependency/WPF/solution gates, incremental source heuristics, contributor guidance, ADR process, release integration, and a current baseline with no findings. |
 | AI Assistant, Chapter 24 | Complete local foundation | Offline read-only explanations consume bounded current evidence at five UI entry points; remote models, generation, learning, and change application are deferred. |
@@ -83,7 +83,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Profile workflows | Complete | Integration tests/manual UI | Import preview, legacy/package Export, Duplicate, Rename, Save As, searchable metadata, templates, comparison/merge, recents, and configurable Auto Save that skips unchanged intervals. |
 | Profile Health Report | Complete | Unit tests/manual UI | Missing devices, duplicates, conflicts, plugins, transforms, validation, and migration status. |
 | Process-aware profile activation | Complete foundation | Core/integration/build/manual UI | Optional executable or running-process target, local polling, exact-path preference, conflict-safe selection, and Safe Mode suppression. |
-| Application settings persistence | Complete foundation | Integration tests | Schema v5 adds interface mode, visual keyboard layout, and provider-correlation override while preserving prior settings separately from profiles. |
+| Application settings persistence | Complete foundation | Integration tests | Schema v6 persists interface mode, visual keyboard layout, provider correlation, window placement, and workspace state separately from profiles. |
 | Easy/Advanced presentation | Complete foundation | Core/integration/build/manual UI | Easy navigation and presets use the same profiles/runtime; Advanced restores the complete tool surface. |
 | Visual keyboard and mouse mapping | Complete foundation | Core/integration/build/manual UI | US ANSI/Nordic data layouts, stable key identity, assignment/live states, visual mouse targets, and accessible list/capture fallbacks. |
 | Mouse output | Complete foundation | Core/integration/build/manual OS validation pending | Shared-scheduler relative movement, proportional axes, acceleration, modifiers, five buttons, two wheel axes, diagnostics, and emergency cleanup. |
@@ -91,13 +91,13 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Virtual Xbox 360 output | Complete when driver installed | Integration test for neutralization | ViGEm-backed output creates Xbox 360 controller if ViGEmBus is installed. |
 | Bundled driver installer | Complete explicit flow | Build output/integration/smoke | Official ViGEmBus 1.22.0 EXE is bundled; installation requires wizard confirmation and visible UAC. |
 | Driver detection | Complete | Core/integration/smoke | Shared service checks ViGEmBus registry/service and default driver paths without blocking startup. |
-| Application installer | Complete development foundation | Inno compile/script round-trip | Per-user or machine-wide installer source detects prerequisites, backs up before upgrade, and preserves user data by default; production signing and clean-machine validation remain open. |
+| Application installer | Complete signed foundation | Inno compile/sign/verify and release publication | Per-user or machine-wide installer detects prerequisites, backs up before upgrade, preserves user data by default, and has produced certificate-backed signed artifacts; clean-machine validation remains open. |
 | Update service | Complete offline foundation | Core/integration tests | Stable/Beta channel, explicit confirmation, and signature policy are modeled; network checks/download/install are intentionally disabled. |
 | First Run Wizard | Complete | Build/integration/smoke | Existing installs skip automatically; users can reopen setup from About. |
 | Output Monitor | Complete | UI Automation | Shows plugin lifecycle/health/rate/queue/errors plus typed Xbox and Keyboard state with reset controls. |
 | Structured logging | Complete | Integration/smoke | Bounded asynchronous JSON lines with queue telemetry and deterministic shutdown flush. |
 | System tray support | Complete foundation | Manual | Tray service exists; deeper tray workflow validation deferred. |
-| Diagnostics page | Partial | Manual | Shows text diagnostics; telemetry and stage diagnostics now provide a shared data source for future richer views. |
+| Diagnostics | Complete foundation | Core/integration/manual | The text log, Device Inspector exports, Signal Flow Inspector, Output Monitor, Developer Dashboard, Project Health, and Debug-only profiler consume shared runtime diagnostics without reading hardware directly. |
 | Developer Dashboard | Complete | Debug/Release build validation | Debug-only navigation page displays build/git data and consumes `IRuntimeTelemetry` for runtime, driver, scheduler, UI, process, memory, and stage metrics. |
 | Runtime Performance Profiler | Complete foundation | Debug/Release build and UI validation | Debug-only recording, atomic JSON save/load, and average-metric session comparison; profiler sources are removed from Release. |
 | Built-in Test Runner | Complete foundation | Debug/Release build and automated tests | Debug-only six-suite validation, JSON/HTML export, and signal recording/replay controls; sources are removed from Release. |
@@ -121,7 +121,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | --- | --- | --- |
 | Generic Windows HID joystick/gamepad/multi-axis controller | Supported foundation | Enumerated through HID/SetupAPI when present. |
 | WinWing Orion joystick/throttle | User-validated partial | User reported real devices are visible and input is working after HID fixes; formal validation matrix still needed. |
-| vJoy devices | Supported foundation | Classified as virtual when HID path/name indicates vJoy/virtual. |
+| vJoy input devices | Supported discovery foundation | User-installed vJoy devices are classified as virtual when the HID path/name indicates vJoy; HOTASBridge does not bundle the driver or provide vJoy output. |
 | ViGEm virtual Xbox 360 output | Driver-dependent | Works when ViGEmBus is installed; driver was present during Chapter 2 smoke validation. |
 | Simulated joystick/throttle/pedals/button box | Tested | Used by integration tests and demo mode. |
 | Thrustmaster, Virpil, VKB, Logitech, Turtle Beach | Not formally validated | Generic HID support should cover many devices; hardware-specific compatibility not yet recorded. |

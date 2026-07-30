@@ -5,13 +5,13 @@
 Build an explicitly unsigned developer package with:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.26.0
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0
 ```
 
 Build a fail-closed signed release from a code-signing certificate already installed in the Windows certificate store:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.26.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0 `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -RequireSigning
@@ -32,7 +32,7 @@ The script publishes `win-x64`, verifies the application and bundled ViGEmBus pa
 
 ```powershell
 .\scripts\Verify-ReleaseArtifacts.ps1 `
-  -ManifestPath .\artifacts\installer\HOTASBridge-0.26.0-release.json `
+  -ManifestPath .\artifacts\installer\HOTASBridge-0.27.0-release.json `
   -RequireValidSignature
 ```
 

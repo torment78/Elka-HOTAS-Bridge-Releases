@@ -102,7 +102,7 @@ Light, Dark, and System modes use application-level dynamic brush resources. Sys
 
 `NavigationViewModel` owns the visible destination collection, selected item, null-safe page key, Easy/Advanced rebuilds, and the command shared by the sidebar and quick actions. The tested Core `InterfacePresentationPolicy` defines Easy and Advanced destination catalogs plus feature requirements; the App filters those requirements through `IFeatureFlagService`. `MainViewModel` retains only page-entry effects such as refreshing diagnostics. Easy Mode shows Home, Input Devices, Test Inputs, Mappings, Outputs, Profiles, Settings, and About. Both modes resolve the same `HotasProfile`, mappings, Runtime Signal Cache, and runtime services. About remains common so setup recovery and offline third-party notices are always reachable.
 
-Switching modes never edits a profile. Easy Mode displays a notice only when a profile contains custom transforms, conditions, macros, or non-default layers that its simplified editor cannot edit. Those mappings remain active and persisted.
+Fresh and upgraded installations lock the presentation to Easy Mode. General Settings provides the deliberate owner action that unlocks Advanced Mode and exposes the mode selector, advanced settings, diagnostics, and editor controls. Locking it again immediately rebuilds Easy navigation. Switching or locking modes never edits a profile. Easy Mode displays a notice only when a profile contains custom transforms, conditions, macros, or non-default layers that its simplified editor cannot edit. Those mappings remain active and persisted.
 
 ### Feature Flags
 

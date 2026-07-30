@@ -2,7 +2,7 @@
 
 ## Scope
 
-TD-035 covers release signing, published checksums, and clean-machine install, retained-build upgrade, rollback, repair, and uninstall acceptance. This milestone completes the source-controlled tooling and evidence format. It does not claim that HOTASBridge has been signed with a production certificate or accepted on clean Windows machines.
+TD-035 covers release signing, published checksums, and clean-machine install, retained-build upgrade, rollback, repair, and uninstall acceptance. The source-controlled tooling and evidence format are complete, and a certificate-backed signed release has been produced and published. This report does not include or identify private signing credentials, and clean-Windows acceptance remains pending.
 
 ## Assessment
 
@@ -64,13 +64,11 @@ Each operation writes an Inno log and one `deployment-acceptance.json` result, i
 
 These are operational release gates, not missing implementation:
 
-- Obtain and protect a publicly trusted code-signing certificate.
-- Run `Build-Installer.ps1 -RequireSigning` with that certificate and a reachable trusted timestamp service.
-- Publish the setup, checksum file, and release manifest together.
+- Continue protecting the certificate outside source control and use the existing fail-closed signing path for release candidates.
 - Run the acceptance runner on clean supported Windows 10 and Windows 11 machines for both installation scopes as applicable.
 - Include a retained public installer and `-IncludeUninstallChoiceMatrix` for final sign-off.
 - Complete malware scanning, physical HOTAS, ViGEm/game, keyboard, soak, runtime-matrix, and Version 1.0 architecture-review evidence.
 
-TD-035 therefore has a completed engineering foundation while production signing and clean-machine evidence remain an explicit release blocker.
+TD-035 therefore has completed release tooling and confirmed certificate-backed output. Clean-machine deployment evidence remains an explicit release blocker.
 
 

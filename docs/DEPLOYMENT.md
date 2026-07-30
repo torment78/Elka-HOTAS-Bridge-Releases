@@ -102,20 +102,20 @@ Runtime outputs are never backed up or restored. No key, Xbox button, PWM timer,
 Unsigned developer package:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.26.0
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0
 ```
 
 Fail-closed signed package:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.26.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0 `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -TimestampUrl 'http://timestamp.digicert.com' `
   -RequireSigning
 ```
 
-The output directory contains `HOTASBridge-0.26.0-Setup.exe`, `HOTASBridge-0.26.0-release.json`, and `HOTASBridge-0.26.0-SHA256SUMS.txt`. `Verify-ReleaseArtifacts.ps1` independently verifies the set. The scripts use a certificate already installed in the Windows certificate store and never accept private-key material or a password.
+The output directory contains `HOTASBridge-0.27.0-Setup.exe`, `HOTASBridge-0.27.0-release.json`, and `HOTASBridge-0.27.0-SHA256SUMS.txt`. `Verify-ReleaseArtifacts.ps1` independently verifies the set. The scripts use a certificate already installed in the Windows certificate store and never accept private-key material or a password.
 
 ## Package Layout
 

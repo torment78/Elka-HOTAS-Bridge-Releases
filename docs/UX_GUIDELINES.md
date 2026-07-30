@@ -62,6 +62,7 @@
 - Use Home, Input Devices, Test Inputs, Mappings, Outputs, Profiles, and Settings instead of internal subsystem names.
 - Keep device testing available before generated outputs are started.
 - Present selected device name, physical/virtual state, connection, type, and control counts before low-level paths/usages.
+- Keep Advanced Mode locked by default and expose one deliberate unlock/lock action in General Settings; this presentation state must never modify profile content.
 - Keep advanced data non-destructive and hidden until requested.
 - Presets must state how many normal mappings they create and must never introduce hidden runtime behavior.
 - Pair every visual output picker with a keyboard-accessible list or capture path.

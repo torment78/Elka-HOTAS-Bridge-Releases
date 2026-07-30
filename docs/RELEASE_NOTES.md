@@ -1,12 +1,46 @@
 # Elka HOTAS Bridge Release Notes
 
+## 0.27.0 Test Release 1 - Easy Mode Stabilization
+
+This signed Windows 10/11 x64 test release focuses the Release experience on
+the stable Easy Mode workflow. Advanced Mode remains available to developers in
+Debug builds while its unfinished tools continue under construction.
+
+Highlights:
+
+- A responsive Easy Macro Editor with recording, trigger learning, clear-all
+  controls, sustained key and mouse actions, toggles, sequence, and ping-pong
+  playback.
+- A resizable Saved Mappings area, corrected macro action layout, improved
+  mapping and diagnostics responsiveness, and persistent workspace sizing.
+- Device-first axis selection, independent negative and positive axis response
+  settings, and a stable square curve preview.
+- Expanded runtime diagnostics, reliability, release validation, architecture
+  checks, and profile compatibility protections.
+
+The installer and portable package are framework-dependent and require the
+.NET 10 Desktop Runtime. The installer includes the existing ViGEmBus setup
+payload but never installs or removes the driver silently.
+
+Validation evidence and signed-artifact hashes are published with the release.
+This remains a test release; back up important profiles before upgrading.
+
 ## 0.26.0-dev - Easy Input and Generated Output Workflow
 
 This milestone adds Easy/Advanced presentation over the existing runtime, stable provider-aware hat/D-pad normalization, duplicate-provider correlation, mouse output, interactive visual keyboard/mouse mapping, common Easy Mode presets, output selection in First Run Setup, and profile-aware collapsible output monitors.
 
 Follow-up usability and release-engineering changes add:
 
-- Fail-closed Authenticode signing hooks for first-party binaries, setup, and uninstaller; SHA-256 release manifests and independent verification; and a disposable-machine retained-upgrade/rollback/repair/uninstall acceptance runner. A production certificate and clean-machine evidence are still required before public release.
+- Fail-closed Authenticode signing for first-party binaries, setup, and uninstaller; SHA-256 release manifests and independent verification; and a disposable-machine retained-upgrade/rollback/repair/uninstall acceptance runner. Certificate-backed release output and publication have been completed; no signing credentials are stored in source control. Clean-machine acceptance remains required.
+- A stable .NET 10.0.302 SDK pin with preview roll-forward disabled, resolving the preview-toolchain blocker.
+- Correct Project Health classification so completed and intentionally deferred history is no longer reported as active technical debt.
+
+Current automated validation:
+
+- 434 tests passed with 58.68 percent merged runtime line coverage (19,472 of 33,183 lines).
+- Debug and Release builds completed with zero warnings and zero errors on stable .NET SDK 10.0.302.
+- Architecture validation reported zero errors, warnings, and suggestions.
+- Isolated fresh-install, existing Easy/Advanced, profile package, Macro Editor, Node Editor, Script Workbench, Diagnostics, coordinated shutdown, and Safe Mode WPF smoke passed.
 
 - Optional branching graphs in the Beta Node Editor, including typed direct ports, AND/OR/NOT/Compare nodes, one registered internal pass-through extension node, graph validation, live per-node timing, workspace-persisted positions/zoom, and large-graph viewport culling.
 - Graph-safe mapping duplication and profile comparison/merge without changing graph-free mappings.

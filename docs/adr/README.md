@@ -61,6 +61,7 @@ Record benefits, costs, risks, migration work, and follow-up items.
 | [0003](0003-normalized-hat-and-output-plugins.md) | Normalize provider hats and keep generated mouse output behind the output-plugin boundary. |
 | [0004](0004-descriptor-authoritative-mapping-behavior.md) | Make enabled mapping behavior descriptors authoritative while retaining legacy projections temporarily. |
 | [0005](0005-optional-branching-graphs.md) | Persist optional branching graphs and compile them through the existing RuntimeSignal and OutputAction contracts. |
+| [0006](0006-defer-vjoy-output-driver.md) | Keep vJoy output and driver bundling outside the current release until a maintained signed upstream passes acceptance. |
 
 Formal review records live under [../architecture-reviews](../architecture-reviews/README.md). A satisfied milestone gate links at least one ADR; the review records evidence and findings, while the ADR records the durable decision.
 

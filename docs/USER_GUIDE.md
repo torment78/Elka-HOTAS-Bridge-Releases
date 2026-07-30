@@ -144,11 +144,11 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for device, driver, mapping, and pr
 
 ## Current Release Limits
 
-Version `0.26.0-dev` is a development milestone, not the supported 1.0 release. Production signing, formal physical-hardware sign-off, clean-machine installer validation, runtime support policy, migration rehearsal, and long-duration soak evidence remain open in [PROJECT_HEALTH.md](PROJECT_HEALTH.md).
+Version `0.26.0-dev` is a development milestone, not the supported 1.0 release. Certificate-backed signing has been completed; formal physical-hardware sign-off, clean-machine installer validation, retained-build migration rehearsal, long-duration soak evidence, and the final Version 1.0 architecture review remain open in [PROJECT_HEALTH.md](PROJECT_HEALTH.md).
 
 ## Easy Setup Workflow
 
-1. In Settings choose Easy for the focused setup navigation or Advanced for every diagnostic/editor page.
+1. The application starts in locked Easy Mode. To work on deeper diagnostics or editors, open Settings > General and select **Unlock Advanced Mode**. Use **Lock Advanced Mode** there to return immediately to the focused setup navigation.
 2. Add one or more devices under Input Devices. Input testing works before Start Mapping.
 3. Use Test Inputs to verify axes, buttons, hats/D-pads, encoders, switches, and unknown controls per device tab.
 4. In Mappings select an input, choose Xbox, Keyboard, or Mouse, then click the visual target or its list fallback.

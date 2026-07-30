@@ -28,6 +28,14 @@ Each mapping stores:
 
 Schema v8 made the enabled generated behavior descriptor authoritative. Behavior, inversion, release, toggle, pulse, repeat mode, and timing execute through registered transforms. The legacy axisProcessing, buttonProcessing, behavior, and pulseDuration properties remain serialized projections until a separately reviewed removal.
 
+## Axis Processing Shape
+
+Axis processing stores calibration range, shared center offset, inversion, anti-deadzone, output range, and symmetric curve/deadzone/sensitivity settings.
+
+Schema v9 also accepts the additive `useIndependentSides`, `negativeSide`, and `positiveSide` properties. Each side contains `innerDeadzone`, `outerDeadzone`, `sensitivity`, and `curve`. When `useIndependentSides` is absent or false, the runtime ignores the side objects and preserves the symmetric processing path.
+
+Directional settings are configuration only. Current values, selected editor side, processing history, and diagnostic state are not serialized.
+
 ## Optional Graph
 
 Schema v9 adds the nullable graph property to InputMapping. It is absent or null for ordinary linear mappings.
@@ -74,4 +82,4 @@ Outputs store plugin ID, display name, enabled state, and plugin configuration. 
 | 6 | Searchable profile-library metadata and local package workflows. |
 | 7 | Normalized hat direction/center/diagonal data and mouse pointer output settings. |
 | 8 | Generated behavior descriptors become runtime-authoritative while legacy fields remain projections. |
-| 9 | Optional versioned branching mapping graphs with stable typed ports; existing linear mappings remain graph-free. |
+| 9 | Optional versioned branching mapping graphs plus additive independent negative/positive axis settings; existing linear mappings and symmetric curves remain unchanged. |

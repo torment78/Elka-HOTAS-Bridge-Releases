@@ -48,7 +48,11 @@ Supported curve types are Linear, Exponential, Logarithmic, S-Curve, and Custom 
 -1:-1;-0.5:-0.2;0:0;0.5:0.2;1:1
 ```
 
-`AxisCurvesView` is the visual editor for raw input, processed output, live position, deadzone, inversion, sensitivity, and curve shape. It binds directly to `AxisCurveEditorViewModel`, and its graph receives current unsaved controls as preview values. Saving explicitly updates that axis mapping's generated compatibility descriptors. General transform order and settings are managed in Transform Editor.
+`AxisCurvesView` first selects a device and then one of that device's axes. Its fixed-square preview displays raw input, processed output, live position, deadzone, inversion, sensitivity, and curve shape without stretching when the workspace is resized. The graph receives current unsaved controls as preview values.
+
+Bipolar axes may optionally use independent negative and positive side settings. Each side owns its inner deadzone, outer deadzone, sensitivity, and curve. Side selection is based on the physical value before inversion, so inversion flips the finished response without swapping the settings the user assigned to each physical direction.
+
+Independent sides are disabled by default. Existing profiles continue to use the symmetric `AxisProcessingSettings` fields unchanged. Saving explicitly updates only that axis mapping's generated compatibility descriptors. General transform order and settings are managed in Transform Editor.
 
 ## Filters And State
 

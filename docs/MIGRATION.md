@@ -2,7 +2,17 @@
 
 ## Supported Upgrade
 
-`ProfileMigration currently upgrades schema v1 through v8 profiles to schema v9. Migration is additive and keeps the original runtime settings intact.
+`ProfileMigration` currently upgrades schema v1 through v8 profiles to schema v9. Migration is additive and keeps the original runtime settings intact.
+
+### Schema-V9 Additive Directional Axis Fields
+
+Independent negative and positive axis processing is an additive schema-v9 capability and does not require a schema-version increase.
+
+1. Missing `useIndependentSides` values default to `false`, preserving the existing symmetric curve, deadzone, and sensitivity behavior.
+2. Missing or explicitly null `negativeSide`, `positiveSide`, nested curve, and control-point values are rehydrated safely.
+3. Each side stores only curve, inner deadzone, outer deadzone, and sensitivity configuration.
+4. Calibration, anti-deadzone, output scaling, inversion, and runtime state remain shared.
+5. No migration automatically enables independent sides or changes existing axis output.
 
 ## V1 To V2 Rules
 
@@ -127,6 +137,10 @@ Driver status and update-check state are application concerns and never modify p
 ## Application Settings V5 To V6
 
 Application settings schema v6 adds `logRetentionDays`. Existing files receive the 14-day default; loaded and saved values are clamped to 1-365 days. This settings migration does not change profile schema v9, workspace layouts, mappings, outputs, or runtime state.
+
+## Application Settings V6 To V7
+
+Application settings schema v7 adds `advancedModeUnlocked`. Fresh and upgraded installations start in locked Easy Mode, including installations that previously saved Advanced Mode. The owner can unlock Advanced Mode from General Settings; that choice is then persisted. Locking the interface again changes only UI access and never edits profiles, mappings, macros, transforms, outputs, or runtime state.
 
 ## Backup Rule
 

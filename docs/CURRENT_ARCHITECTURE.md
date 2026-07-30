@@ -46,10 +46,11 @@ HOTASBridge.IntegrationTests -> Core/Input/Output/Infrastructure
 
 ```text
 WPF App startup
-  -> create AppPaths and JsonFileLog
-  -> assess deployment prerequisites without blocking startup
-  -> manually construct input providers, profile store, output and deployment services, MainViewModel
-  -> MainViewModel loads profiles and refreshes devices
+  -> create AppPaths, structured logging, telemetry, and the runtime event bus
+  -> ApplicationComposition registers and validates the Microsoft DI service graph
+  -> resolve the shell, runtime coordinators, plugins, persistence, and deployment services
+  -> initialize the selected profile and refresh device discovery
+  -> start health monitoring and optional local feature services
   -> evaluate First Run Wizard policy after the shell is ready
 
 Input discovery
@@ -62,24 +63,25 @@ Input discovery
 
 Mapping runtime
   -> CompositeInputProvider starts selected HID/simulation providers
-  -> provider adapters publish RuntimeSignals to MainViewModel
-  -> MainViewModel dispatches to WPF Dispatcher
-  -> Device Inspector, curve views, recent event log update
-  -> MappingEngine applies matching profile mappings
-  -> XboxState is submitted to IVirtualGamepadOutput
+  -> provider adapters publish immutable RuntimeSignals and update the signal cache
+  -> RuntimeMappingCoordinator submits matching work to RuntimeWorkScheduler
+  -> MappingEngine evaluates indexed mappings and produces OutputActions
+  -> OutputManager dispatches actions to isolated output plugins
+  -> WPF samples coalesced cache/telemetry state independently of runtime processing
 
 Output runtime
-  -> VirtualXboxOutputService checks ViGEmBus
-  -> creates ViGEm Xbox 360 controller when available
-  -> submits XboxState reports
-  -> neutralizes and disconnects on stop/shutdown
+  -> OutputManager owns Xbox, Keyboard, and Mouse plugin lifecycles
+  -> XboxOutputPlugin checks ViGEmBus and submits XboxState reports
+  -> KeyboardOutputPlugin and MouseOutputPlugin use tracked SendInput boundaries
+  -> OutputScheduler owns PWM, repeat, pulse, and delayed work
+  -> reset/profile change/shutdown release tracked output state
 ```
 
 ## Major Services
 
 | Service/Class | Project | Responsibility | Current Classification |
 | --- | --- | --- | --- |
-| `MainViewModel` | App | UI state, profile interaction, device refresh, mapping loop coordination | Candidate for Refactoring |
+| `MainViewModel` | App | Presentation state and UI-facing runtime/profile/device lifecycle coordination | Candidate for Refactoring |
 | `ViGEmBusDriverService` | Output | Shared driver detection and explicitly confirmed elevated installer launch | Stable Adapter |
 | `DeploymentAssessmentService` | Infrastructure | Prerequisite and install-scope assessment independent of WPF | Stable Foundation |
 | `DeploymentBackupService` | Infrastructure | Versioned deployment ZIP backup and path-safe restore | Stable Foundation |
@@ -91,7 +93,7 @@ Output runtime
 | `WindowsRawInputDeviceProvider` | Input | Raw Input discovery foundation | Candidate for Extension |
 | `SimulatedInputService` | Input | Simulated devices and live events for demo/testing | Stable |
 | `DuplicateInputDetector` | Core | Warns about likely duplicate physical/virtual paths | Stable |
-| `MappingEngine` | Core | Converts matching input events into generated Xbox state | Candidate for Extension |
+| `MappingEngine` | Core | Evaluates matching RuntimeSignals and emits standardized OutputActions | Stable Foundation |
 | `AxisProcessor` | Core | Normalization, deadzone, curve, stick/trigger conversion | Stable |
 | `CurveProcessor` | Core | Response curve processing | Stable |
 | `DeviceIdentityMatcher` | Core | Profile device reconnection scoring | Stable |
@@ -125,7 +127,7 @@ Output runtime
 
 | Dependency | Location | Purpose |
 | --- | --- | --- |
-| .NET SDK 10.0.301 | `global.json` | Build/runtime target. |
+| .NET SDK 10.0.302 | `global.json` | Stable pinned build SDK; preview roll-forward is disabled. |
 | WPF | `HOTASBridge.App` | Windows desktop UI. |
 | Windows Forms | `HOTASBridge.App` | Tray icon support. |
 | Windows HID API (`hid.dll`) | `HOTASBridge.Input` | HID discovery/report parsing. |
@@ -153,9 +155,9 @@ Output runtime
 | Area | Current Behavior |
 | --- | --- |
 | WPF UI | Main thread/Dispatcher. |
-| HID report reading | Background tasks per selected HID device. |
-| Mapping | Currently performed inside Dispatcher work scheduled by input event handling. |
-| Output submission | Fire-and-forget `UpdateAsync` from UI-dispatched handler. |
+| HID report reading | Background tasks per selected HID device publish immutable RuntimeSignals. |
+| Mapping | Bounded runtime-scheduler lane; the input-to-output path does not wait for WPF. |
+| Output submission | Bounded output lane dispatches batches to isolated plugins; timed output uses the central OutputScheduler. |
 | Logging | Bounded multi-writer channel feeding one batched asynchronous JSON-lines writer with explicit flush barriers. |
 | Driver installation | Runs only after explicit wizard confirmation; the elevated process is awaited asynchronously. |
 
@@ -175,14 +177,14 @@ Output runtime
 ## Known Limitations and Technical Debt
 
 - Microsoft DI now registers and validates the application service graph in `ApplicationComposition.cs`; further coordinator extraction can move additional lifecycle ownership out of `MainViewModel` incrementally.
-- `MainViewModel` coordinates too many responsibilities and owns mapping loop orchestration.
+- `MainViewModel` remains a broad presentation coordinator, although runtime session, mapping, input monitoring, device, profile management, and persistence responsibilities now have service boundaries.
 - RuntimeSignal publication, indexed mapping, runtime contributions, OutputAction batches, and Xbox Output Manager dispatch are active.
-- Central runtime and output schedulers are active; `MainViewModel` still coordinates the UI-facing runtime lifecycle and throttled presentation updates.
-- Diagnostics now have a first-class telemetry foundation; exporter/profiler workflows are still future work.
-- UI pages are implemented in one large `MainWindow.xaml`.
+- Central runtime and output schedulers are active; `MainViewModel` coordinates UI-facing lifecycle and throttled presentation updates.
+- Diagnostics use shared telemetry, stage metadata, JSON/CSV/text device export, a Signal Flow Inspector, and Debug-only performance recording/comparison.
+- UI pages are split into dedicated `Views/*.xaml` controls hosted by a small shell; some broad view models remain candidates for incremental extraction.
 - Hardware-specific validation remains manual.
-- Release engineering supports certificate-store signing, signed setup/uninstaller generation, SHA-256 manifests, independent verification, and disposable-machine acceptance; no production certificate or clean-machine evidence has been recorded yet.
-- Output backend is isolated but not yet plugin-hosted.
+- Certificate-backed signed application/setup/uninstaller artifacts and SHA-256 manifests have been produced and published without signing credentials in source control; disposable clean-machine acceptance evidence remains open.
+- Xbox, keyboard, and mouse outputs are internal plugins. Loading third-party assemblies remains deferred behind a separate trust and isolation review.
 
 ## Source File Classification
 
@@ -193,7 +195,7 @@ Output runtime
 | `src/HOTASBridge.App/App.xaml` | Stable | Minimal WPF app resource root. |
 | `src/HOTASBridge.App/AssemblyInfo.cs` | Stable | WPF theme metadata. |
 | `src/HOTASBridge.App/GlobalUsings.cs` | Stable | Shared app usings. |
-| `src/HOTASBridge.App/MainWindow.xaml` | Candidate for Refactoring | Large single-file shell; keep working UI before modularizing. |
+| `src/HOTASBridge.App/MainWindow.xaml` | Stable shell | Hosts dedicated page views and shared workspace chrome. |
 | `src/HOTASBridge.App/MainWindow.xaml.cs` | Stable | Minimal code-behind. |
 | `src/HOTASBridge.App/Controls/CurveEditorControl.cs` | Candidate for Extension | Functional rendering; editable custom points deferred. |
 | `src/HOTASBridge.App/Controls/StickVisualizer.cs` | Stable | Small visual control. |
@@ -204,7 +206,7 @@ Output runtime
 | `src/HOTASBridge.App/Services/TrayIconService.cs` | Candidate for Extension | Tray behavior exists; needs wider lifecycle validation. |
 | `src/HOTASBridge.App/ViewModels/DeveloperDashboardViewModel.cs` | Candidate for Extension | Debug-only telemetry consumer; now reads `IRuntimeTelemetry` snapshots. |
 | `src/HOTASBridge.App/ViewModels/DeviceViewModels.cs` | Candidate for Extension | Device/inspector models work; may split as UI grows. |
-| `src/HOTASBridge.App/ViewModels/MainViewModel.cs` | Candidate for Refactoring | Central orchestration class; future runtime/scheduler separation needed. |
+| `src/HOTASBridge.App/ViewModels/MainViewModel.cs` | Candidate for Refactoring | Broad presentation coordinator; runtime, scheduler, input, device, and profile services are already separated. |
 | `src/HOTASBridge.App/ViewModels/MappingAndXboxViewModels.cs` | Candidate for Extension | Small view models; developer metrics may extend. |
 | `src/HOTASBridge.App/ViewModels/NavigationItem.cs` | Stable | Simple navigation record. |
 | `src/HOTASBridge.App/ViewModels/ObservableObject.cs` | Stable | MVVM base. |
@@ -214,8 +216,8 @@ Output runtime
 | `src/HOTASBridge.Core/Domain/DeviceIdentity.cs` | Stable | Stable ID creation. |
 | `src/HOTASBridge.Core/Domain/Enums.cs` | Candidate for Extension | Current enums are functional; output/action model will expand. |
 | `src/HOTASBridge.Core/Domain/InputModels.cs` | Stable Foundation | `InputEvent` remains compatibility input and adapts into `RuntimeSignal`. |
-| `src/HOTASBridge.Core/Domain/ProfileMigration.cs` | Stable Foundation | v1-to-v2 migration, compatibility synchronization, and extension-node preservation. |
-| `src/HOTASBridge.Core/Domain/Profiles.cs` | Stable Foundation | Schema v3 mapping metadata, conditions, priority, transforms, and generic output configuration. |
+| `src/HOTASBridge.Core/Domain/ProfileMigration.cs` | Stable Foundation | v1-v8 migration, compatibility synchronization, exact backup, and extension-node preservation. |
+| `src/HOTASBridge.Core/Domain/Profiles.cs` | Stable Foundation | Schema v9 mappings, conditions, macros, transforms, output configuration, and optional graphs. |
 | `src/HOTASBridge.Core/Domain/XboxState.cs` | Stable | Focused output state model. |
 | `src/HOTASBridge.Core/Runtime/RuntimeSignal.cs` | Stable Foundation | Unified signal model for normalized runtime processing. |
 | `src/HOTASBridge.Core/Runtime/RuntimeSignalEngine.cs` | Stable Foundation | Owns immutable input publication, cache updates, error isolation, and signal telemetry. |
@@ -247,7 +249,7 @@ Output runtime
 | `src/HOTASBridge.Infrastructure/JsonApplicationSettingsStore.cs` | Stable Foundation | Atomic Auto Save/recent-profile settings persistence. |
 | `tests/HOTASBridge.Core.Tests/ProfileSystemTests.cs` | Stable | Schema migration, health, and template regression protection. |
 | `tests/HOTASBridge.IntegrationTests/ProfilePersistenceTests.cs` | Stable | Persistence, backup, workflow, and settings regression protection. |
-| `src/HOTASBridge.Output/VirtualXboxOutputService.cs` | Candidate for Extension | Working ViGEm backend; plugin manager later. |
+| `src/HOTASBridge.Output/VirtualXboxOutputService.cs` | Stable Adapter | Working ViGEm backend hosted by `XboxOutputPlugin`; external plugin loading remains separately gated. |
 | `tests/HOTASBridge.Core.Tests/AxisProcessorTests.cs` | Stable | Regression protection. |
 | `tests/HOTASBridge.Core.Tests/CurveProcessorTests.cs` | Stable | Regression protection. |
 | `tests/HOTASBridge.Core.Tests/DeviceAndProfileTests.cs` | Stable | Regression protection. |

@@ -17,7 +17,7 @@
 | --- | --- | --- | --- | --- | --- |
 | Generic Windows HID joystick/gamepad/multi-axis controller | Device-specific | Windows HID | Windows 10/11 | Supported foundation | Shared HID value-cap parsing has automated layout, range, signed conversion, clamping, null, and endpoint coverage; model-specific reports still require hardware validation. |
 | WinWing Orion joystick/throttle | Not recorded | Vendor/Windows HID | Windows 11 user report | User-validated partial | Real controls were reported visible and working after HID normalization and identity fixes. Formal range/reconnect matrix is still required. |
-| vJoy input device | Device-specific | vJoy | Windows 10/11 | Supported foundation | Classified as virtual when path/name evidence identifies vJoy. HOTASBridge does not create vJoy output in Version 2. |
+| vJoy input device | Device-specific | User-installed vJoy | Windows 10/11 | Supported foundation | Classified as virtual when path/name evidence identifies vJoy. HOTASBridge does not create vJoy output or bundle its driver; see ADR 0006. |
 | ViGEm Xbox 360 output | N/A | ViGEmBus 1.22.0 | Windows 10/11 | Driver-dependent | Virtual controller connects while mapping runs. Signed installer is bundled; native failure paths have hardware-free counter/containment coverage, while formal joy.cpl/game acceptance remains pending. |
 | HOTASBridge Generic HOTAS simulation | Built in | None | Any supported Windows | Simulated | Automated catalog and live-input coverage. |
 | Twin Engine Aircraft simulation | Built in | None | Any supported Windows | Simulated | Scripted and generated input available. |

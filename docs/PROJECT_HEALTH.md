@@ -16,7 +16,7 @@ The tracked snapshot is `docs/PROJECT_HEALTH.json`. It records:
 - automated test totals;
 - hardware and backend evidence;
 - known issues and release blockers;
-- active technical debt;
+- technical debt with active, completed, and intentionally deferred status;
 - required manual acceptance checks.
 
 Feature flags are read live from `IFeatureFlagService`, so the page shows the effective state for the current build and settings rather than duplicating them in JSON.
@@ -32,9 +32,13 @@ Feature flags are read live from `IFeatureFlagService`, so the page shows the ef
 
 Overall release readiness is Blocked when the report contains a blocker issue, a required incomplete manual check, or a blocked architecture state. It is Partial when no blocker exists but architecture, documentation, coverage measurement, or hardware evidence is incomplete.
 
+The dashboard counts a debt entry as active only when its status does not begin with `Completed` or `Deferred`. Completed history remains in the machine-readable report for traceability, and explicitly deferred future work does not make the current release's Technical Debt metric partial.
+
 ## Coverage
 
 Coverage is collected from all test projects and merged by source filename and line number. The same source line is counted once even when both suites exercise it.
+
+Release validation requires exact automated-test totals and exact total instrumented source lines. Because timed asynchronous tests can cover either side of a small cleanup/status branch, a repeated run may differ by at most five covered lines and 0.02 percentage points; any larger change is rejected as stale evidence.
 
 Current scope includes:
 

@@ -4,7 +4,15 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 
 ## Unreleased
 
+## 0.27.0 - 2026-07-30
+
 ### Added
+- Restricted Advanced Mode unlocking to Debug builds, clarified its Release status in Settings, separated Easy Macro action fields to prevent overlap, and made the Mapping Editor's Saved mappings area vertically resizable.
+- Added explicit certificate/private-key ignore rules and ADR 0006, which keeps vJoy output and driver bundling deferred until a maintained signed upstream passes the supported-Windows acceptance matrix.
+- Added a persistent Easy Mode interface lock with a deliberate General Settings unlock, advanced-only settings and Macro Editor gating, and non-destructive relocking.
+- Added optional independent negative and positive curve, inner/outer deadzone, and sensitivity settings for bipolar axes while preserving existing symmetric profiles.
+- Added device-first axis selection and a stable square live preview to Axis Curves.
+- Introduced the user-facing **Elka HOTAS Bridge** product name with a dark teal-green application icon, in-app branding, installer presentation, and GitHub artwork while preserving existing `HOTASBridge` executable, namespace, profile-path, and installer identity compatibility.
 - Added a default Easy Macro Editor with familiar ordered action authoring while retaining the existing conditions, variables, and complex triggers in Advanced mode over the same profile model.
 - Added bounded physical keyboard/mouse macro recording, injected-event filtering, quick key/click/toggle actions, mouse movement/wheel replay, and versioned single-macro import/export.
 - Added live macro recording previews, replayable mapped HOTAS click capture, and one-click trigger learning for HOTAS buttons, keyboard keys, mouse buttons, and modifier chords.
@@ -126,6 +134,9 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 
 ### Fixed
 
+- Count only unresolved entries as active technical debt in Project Health; completed and intentionally deferred entries remain visible in the report history without degrading the current debt metric.
+- Updated WPF release smoke automation for current Elka HOTAS Bridge titles, the locked Easy Mode unlock workflow, navigation rebuilds, and signed profile-package labels.
+- Made Project Health coverage validation tolerate only a five-line/0.02-point asynchronous branch drift while retaining exact test-total and total-instrumented-line checks.
 - Accept both object-backed and string-backed PowerShell certificate EKU representations so valid code-signing certificates are not rejected during release builds.
 - Keep the 1 kHz runtime signal path independent from WPF rendering by sampling only the active page, throttling diagnostics, and avoiding unchanged Xbox-state redraws that caused recurring live-input stalls.
 - Render keyboard key selections as concise labels and keep curve selection strongly typed across the editor and live preview.
@@ -137,6 +148,8 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 - Allow confirmed deletion of any selected profile; deleting the final profile now creates a clean persisted replacement instead of reopening its mappings.
 
 ### Changed
+- Reconciled release evidence after successful certificate-backed publication, pinned stable .NET SDK 10.0.302 with previews disabled, and separated complete architecture from outstanding manual acceptance gates.
+- Improved compact-window usability with scrollable Mapping Editor input, Node Palette, and Profile Health panels; adjusted node diagnostic spacing; and limited X/Y position visuals to meaningful paired axes.
 - Force the Inno Setup installer and uninstaller to use the modern dark style, including the title bar, regardless of the Windows light/dark preference.
 - Removed the unused legacy `CompositeInputCatalog` and `CompositeInputEventSource`; active per-provider adapters and the signal-native `CompositeInputProvider` remain unchanged.
 
