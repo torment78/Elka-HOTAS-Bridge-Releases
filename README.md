@@ -13,10 +13,10 @@ It intentionally does not contain the Elka HOTAS Bridge source code.
 
 Open the repository's **Releases** section and select the latest test release:
 
-- `HOTASBridge-0.27.0-Setup.exe` - recommended installer.
-- `HOTASBridge-0.27.0-win-x64.zip` - framework-dependent portable package.
+- `HOTASBridge-0.28.0-Setup.exe` - recommended installer.
+- `HOTASBridge-0.28.0-win-x64.zip` - framework-dependent portable package.
 
-This is a `0.27.0` test release for Windows 10/11 x64. It requires the
+This is a `0.28.0` test release for Windows 10/11 x64. It requires the
 .NET 10 Desktop Runtime.
 
 Release builds focus on the stable Easy Mode workflow. Advanced Mode is under
@@ -30,7 +30,7 @@ Authenticode-signed by Mikael Frisberg and timestamped by SSL.com.
 
 The ZIP format does not support Windows Authenticode. The ZIP contains the same
 signed application binaries and is covered by the published SHA-256 checksum.
-Use `HOTASBridge-0.27.0-SIGNED-SHA256SUMS.txt` to verify both downloads.
+Use `HOTASBridge-0.28.0-SIGNED-SHA256SUMS.txt` to verify both downloads.
 
 The bundled ViGEmBus installer retains its original valid signature from
 Nefarius Software Solutions. Elka HOTAS Bridge detects the virtual Xbox driver and

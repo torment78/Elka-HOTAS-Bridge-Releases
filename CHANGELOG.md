@@ -4,6 +4,23 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 
 ## Unreleased
 
+## 0.28.0 - 2026-08-03
+
+### Added
+- Added an Easy Mode **Split axis to Xbox triggers** preset that turns a centered bipolar axis into independent 0..1 LT/RT outputs, with the selected trigger assigned to the positive direction and both triggers neutral at center.
+- Grouped Mapping Editor Quick Presets by Hat / D-pad, Stick axis, Throttle axis, and Buttons & switches in a separate scrollable output-side card.
+- Added explicit LT/RT and Left/Right Stick preset targets, plus center-safe Direct/Inverted split-axis direction.
+- Separated Mapping Function from Behavior in the normal editor and persisted generated split, threshold, and direction-detection stages independently.
+- Added isolated stopped-runtime Mapping Editor previews for Xbox, keyboard, and mouse mappings without starting output plugins or the virtual controller driver; Dashboard and Output Monitor remain actual-output only.
+- Replaced the abstract Xbox visual with separate supplied top/front Xbox 360 line art in an enlarged 620x380 surface, close-set leader-line callouts, live stick markers, directional D-pad highlights, corrected bumper/trigger labels, button activity, and lower-control LT/RT analog gauges while preserving click-to-map selection; Output Monitor cards now size appropriately for their content.
+- Added an Easy Mode axis-curve shortcut: right-click any Mapping Editor axis to open a focused live Curve Editor with save/reset controls; saved axes display an `S` badge.
+
+- Anchored the Mapping Editor output and Quick Presets column at a constant 14-pixel gap from Selected input; additional window width is now reserved to the right instead of shifting or center-clipping the controller visual.
+### Fixed
+- Allowed installer repair and in-place overwrite to continue when the optional pre-upgrade backup cannot copy locked application files, with a user-data-only retry and logged fallback to Inno transaction rollback.
+- Corrected the stick-axis preset so controls named Y Axis or RY automatically target Xbox Left Stick Y instead of Left Stick X.
+
+
 ## 0.27.0 - 2026-07-30
 
 ### Added

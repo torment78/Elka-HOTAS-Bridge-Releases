@@ -5,13 +5,13 @@
 Build an explicitly unsigned developer package with:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
 ```
 
 Build a fail-closed signed release from a code-signing certificate already installed in the Windows certificate store:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -RequireSigning
@@ -23,7 +23,8 @@ The script publishes `win-x64`, verifies the application and bundled ViGEmBus pa
 
 - The installer supports per-user and machine-wide modes through the Inno privilege selection dialog.
 - Existing application files are upgraded in place under the stable AppId.
-- Before an upgrade changes binaries, settings, profiles, workspaces, and previous application files are archived under `%LOCALAPPDATA%\HOTASBridge\Backups\Deployment`.
+- Before an upgrade changes binaries, setup first tries to archive settings, profiles, workspaces, and previous application files under `%LOCALAPPDATA%\HOTASBridge\Backups\Deployment`.
+- If installed files are locked, setup retries a user-data-only backup. Backup failure is logged but does not block an in-place repair or overwrite; Inno Setup still provides transaction rollback for application files.
 - ViGEmBus is detected and reported, but never installed or removed by the installer. The explicit First Run Setup action owns driver installation.
 - Uninstall preserves every user-data category unless the user selects individual categories for removal.
 - Installation events are appended to `%LOCALAPPDATA%\HOTASBridge\Logs\installation.log`.
@@ -32,7 +33,7 @@ The script publishes `win-x64`, verifies the application and bundled ViGEmBus pa
 
 ```powershell
 .\scripts\Verify-ReleaseArtifacts.ps1 `
-  -ManifestPath .\artifacts\installer\HOTASBridge-0.27.0-release.json `
+  -ManifestPath .\artifacts\installer\HOTASBridge-0.28.0-release.json `
   -RequireValidSignature
 ```
 

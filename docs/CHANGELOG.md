@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+## 0.28.0 - 2026-08-03
+
+### Guided Mapping Presets
+
+- Moved Quick Presets out of the crowded Selected input form and into a dynamic, scrollable card below the active output visual with a 450-pixel minimum width.
+- Added Hat / D-pad, Stick axis, Throttle axis, and Buttons & switches groups so each preset list contains only the selected group.
+- Exposed Direct and Inverted for compatible single-axis and split-axis presets while keeping fixed-behavior hat and button recipes uncluttered.
+- Added explicit LT/RT choices for throttle recipes and Left/Right Stick choices for stick recipes.
+- Corrected Y Axis and RY recognition so the selected Xbox stick automatically receives its matching Y axis.
+- Added focused catalog, targeting, behavior, and WPF smoke coverage.
+- Added a right-click Easy Mode Curve Editor for the selected Mapping Editor axis, reusing inversion, independent positive/negative sides, deadzones, curve types, exponent, sensitivity, live values, save, and reset without exposing axis switching.
+- Added an `S` badge to Mapping Editor axes with profile-owned saved curve settings.
+
+### Installer In-Place Repair
+
+- Kept the stable installer identity and overwrite behavior so an existing installation does not need to be uninstalled first.
+- Retried pre-upgrade backup without application binaries when installed files are locked.
+- Made optional backup failure non-blocking while retaining user-data preservation attempts, installer logging, and Inno transaction rollback.
+
+### Split Axis To Xbox Triggers
+
+- Added a Mapping Editor Quick Preset that creates separate negative- and positive-half mappings from one centered axis.
+- The selected Xbox trigger receives positive movement in Direct mode; Inverted mode reverses the physical sides.
+- Both triggers remain at zero in the physical center and each active half scales proportionally from zero to full output.
+- Normal Mapping Editor authoring now separates Mapping Function from Behavior and stores split side independently.
+- Kept both generated entries as ordinary editable mappings using the existing Axis Split transform and profile schema.
+- Verified 445 passing tests, a clean WPF smoke run, and zero-warning Debug and Release solution builds.
+
+
 ### Synthetic Keyboard Holds
 
 - Repeated held keyboard outputs through the centralized scheduler using the active Windows keyboard delay and repeat-rate settings.

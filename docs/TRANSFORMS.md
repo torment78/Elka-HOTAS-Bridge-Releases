@@ -34,6 +34,13 @@ Schema-v4 migration creates the standard axis chain through Clamp. Schema v8 app
 | `direction-detection` | Detect direction, zones, velocity | `mode`, `threshold`, `lower`, `upper` |
 | `behavior` | Apply direct, inverted, release, repeat, and compatibility mapping modes | `behaviorMode`, `invert`, `range`, `repeatMilliseconds`, `pulseMilliseconds` |
 
+## Split Axis To Xbox Triggers
+
+The Mapping Editor Quick Preset **Split axis to Xbox triggers** creates two ordinary mappings from one centered bipolar axis. Select LT or RT on the Xbox visualizer before applying the preset; that selected trigger receives the positive half and the other trigger receives the negative half.
+
+At physical center both trigger outputs are `0`. Positive and negative movement are converted independently from magnitude `0..1`, so neither trigger becomes half-pressed at center. The preset inserts `axis-split` after the generated axis-processing stages and before mapping behavior. Both mappings remain independently editable, disableable, and removable, and no profile schema change is required.
+
+
 ## Behavior Authority
 
 Schema-v8 profiles contain one enabled generated descriptor whose ID ends with -behavior. Toggle and pulse modes use their registered stateful transform types; other mapping modes use the behavior transform. Each publishes the effective behavior and timing into RuntimeSignal metadata for Output Mapping and OutputAction creation.

@@ -31,13 +31,17 @@ Schema v3 mappings contain:
 - output plugin, generic control ID, kind, and plugin configuration;
 - priority and notes;
 - optional conditions;
+- a separate mapping function and behavior;
+- split-axis side selection where applicable;
 - legacy Xbox enum and axis/button settings retained for compatibility.
 
 Runtime values, toggles, pulses, active contributions, and timestamps are not serialized.
 
 ## Authoring Transactions
 
-`MappingProfileEditor` is the UI-independent mutation boundary for normal Mapping Editor operations. A `MappingAuthoringRequest` snapshots the selected input, output family, hat behavior, axis settings, pointer settings, keyboard metadata, and optional Analog PWM options. Add, update, and remove operations enable required profile outputs and synchronize compatibility descriptors as one transaction.
+`MappingProfileEditor` is the UI-independent mutation boundary for normal Mapping Editor operations. A `MappingAuthoringRequest` snapshots the selected input, mapping function, behavior, optional split side, output family, hat behavior, axis settings, pointer settings, keyboard metadata, and optional Analog PWM options. Add, update, and remove operations enable required profile outputs and synchronize compatibility descriptors as one transaction.
+
+Mapping functions describe conversion (`AxisToTrigger`, `SplitAxis`, threshold region, direction detection, or hat/encoder routing). Behaviors describe how the converted value acts (`Direct`, `Inverted`, `Momentary`, `Toggle`, `Pulse`, and related timing modes). Axis inversion is generated before split-axis conversion so the physical center remains zero in both directions.
 
 Validation occurs before mutation. Invalid targets or PWM settings do not partially modify an existing mapping. Updates preserve mapping identity, name, conditions, notes, priority, layer/enabled state, and non-PWM custom transforms while replacing the selected source/output configuration and detached mutable processing settings.
 
@@ -46,6 +50,16 @@ Validation occurs before mutation. Invalid targets or PWM settings do not partia
 `IMappingEngine.UpdateMappings` builds an immutable snapshot indexed by case-insensitive device/control key. Processing looks up only mappings affected by the incoming signal. Rebuilding swaps the snapshot atomically; the app does this whenever mappings are created, edited, duplicated, enabled, disabled, loaded, or switched with a profile.
 
 Invalid mappings remain unchanged in the profile but are excluded from the active lookup. Removed, disabled, invalid, or retargeted mappings generate release/neutral transition actions for any live contribution.
+
+## Mapping Editor Preview
+
+`MappingOutputPreviewSession` owns a separate Mapping Engine instance, runtime state store, held-control set, and visual output reducers. While mapping output is stopped, the Mapping Editor evaluates the input monitor's throttled `RuntimeSignal` stream through this isolated session and renders the resulting Xbox, keyboard, and mouse state without dispatching any `OutputAction` to the Output Manager.
+
+Opening the Mapping Editor replays the latest Runtime Signal Cache snapshot so current physical positions are visible before new movement. Profile edits rebuild and reset the preview session. Starting mapping switches the editor to actual output-plugin diagnostics; stopping mapping reconstructs preview state from the cache.
+
+Preview state never enters the live Mapping Engine, output scheduler, output plugins, virtual-controller driver, Dashboard, or Output Monitor. This prevents preview toggles, pulses, held keys, and transform state from affecting the next live runtime session.
+Right-clicking an analog control in the Mapping Editor opens a focused modal Curve Editor for that device/control pair. It uses a detached settings copy until **Save curve** writes through `AxisCurveProfileEditor`, synchronizes matching mappings, and marks the input card with an `S` badge. The modal omits device/axis switching but preserves inversion, independent negative/positive sides, deadzones, curve type, exponent, sensitivity, reset, and live raw/processed values. Closing without saving leaves the profile unchanged.
+
 
 ## Conditions
 

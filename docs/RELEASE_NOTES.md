@@ -1,5 +1,44 @@
 # Elka HOTAS Bridge Release Notes
 
+## 0.28.0 Test Release 1 - Mapping Visualization and Presets
+
+This signed Windows 10/11 x64 test release improves the Easy Mode mapping
+workflow and lets users verify mappings visually before starting virtual output.
+
+Highlights:
+
+- Grouped Quick Presets for hats, sticks, throttles, buttons, and switches with
+  explicit Xbox stick/trigger targets and Direct or Inverted behavior where
+  appropriate.
+- Added a centered split-axis-to-triggers preset that keeps both Xbox triggers
+  neutral at center and scales each physical axis half independently.
+- Added isolated stopped-runtime previews for Xbox, keyboard, and mouse outputs;
+  the ViGEm virtual controller is still created only when mapping starts.
+- Replaced the abstract controller diagram with supplied Xbox 360 top/front line
+  art, live stick and D-pad feedback, button highlighting, corrected bumper and
+  trigger labeling, leader lines, and analog LT/RT gauges.
+- Added a focused Easy Mode Curve Editor from each axis card's right-click menu,
+  with live raw/processed values, save/reset controls, and an `S` badge on axes
+  that own saved curve settings.
+- Enlarged and anchored the controller/output area so Mapping Editor and Output
+  Monitor resizing no longer creates a drifting gap or clips the Xbox visual.
+- Improved installer repair when existing application binaries are locked while
+  retaining user-data backup attempts and Inno Setup rollback protection.
+
+Validation:
+
+- 445 automated tests pass across Core, Integration, Scripting, and Architecture
+  Validator suites.
+- Debug and Release solution builds complete with zero warnings and zero errors.
+- The isolated WPF smoke suite passes fresh/existing setup, Macro Editor, Node
+  Editor, Script Workbench, and Safe Mode startup paths.
+- Every first-party executable and DLL in the installer and portable package is
+  Authenticode-signed and timestamped through the non-GUI SSL.com workflow.
+
+The installer and portable package remain framework-dependent and require the
+.NET 10 Desktop Runtime. This remains a test release; back up important profiles
+before upgrading.
+
 ## 0.27.0 Test Release 1 - Easy Mode Stabilization
 
 This signed Windows 10/11 x64 test release focuses the Release experience on

@@ -81,10 +81,11 @@ The .NET backup service protects in-app manual backups and tests. `Backup-Deploy
 
 1. Inno detects the stable AppId and previous application path.
 2. `PrepareToInstall` extracts the bundled backup helper to Inno's temp directory.
-3. The helper archives data and previous binaries before setup writes files.
-4. A backup failure aborts setup before changes.
-5. Inno owns active-transaction rollback.
-6. `Restore-DeploymentBackup.ps1` restores the additional archive when a previous installation must be reinstated manually.
+3. The helper first attempts to archive data and previous binaries before setup writes files.
+4. If installed files cannot be copied, setup retries a user-data-only backup.
+5. Backup failures are logged but do not block in-place repair or overwrite.
+6. Inno owns active-transaction rollback.
+7. `Restore-DeploymentBackup.ps1` restores the additional archive when a previous installation must be reinstated manually.
 
 Runtime outputs are never backed up or restored. No key, Xbox button, PWM timer, macro execution, or scheduler state survives an upgrade.
 
@@ -102,20 +103,20 @@ Runtime outputs are never backed up or restored. No key, Xbox button, PWM timer,
 Unsigned developer package:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
 ```
 
 Fail-closed signed package:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -TimestampUrl 'http://timestamp.digicert.com' `
   -RequireSigning
 ```
 
-The output directory contains `HOTASBridge-0.27.0-Setup.exe`, `HOTASBridge-0.27.0-release.json`, and `HOTASBridge-0.27.0-SHA256SUMS.txt`. `Verify-ReleaseArtifacts.ps1` independently verifies the set. The scripts use a certificate already installed in the Windows certificate store and never accept private-key material or a password.
+The output directory contains `HOTASBridge-0.28.0-Setup.exe`, `HOTASBridge-0.28.0-release.json`, and `HOTASBridge-0.28.0-SHA256SUMS.txt`. `Verify-ReleaseArtifacts.ps1` independently verifies the set. The scripts use a certificate already installed in the Windows certificate store and never accept private-key material or a password.
 
 ## Package Layout
 

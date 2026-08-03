@@ -45,16 +45,16 @@ Only `Development`, `Beta`, and `Stable` are accepted channel values.
 Unsigned installer candidate for local packaging checks:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
 ```
 
 Signed promotion candidate:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.27.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
   -SigningCertificateThumbprint '<thumbprint>' -RequireSigning
 .\scripts\Verify-ReleaseArtifacts.ps1 `
-  -ManifestPath .\artifacts\installer\HOTASBridge-0.27.0-release.json `
+  -ManifestPath .\artifacts\installer\HOTASBridge-0.28.0-release.json `
   -RequireValidSignature
 ```
 

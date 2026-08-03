@@ -65,6 +65,8 @@ Before an upgrade changes binaries, setup creates a deployment backup containing
 
 Backups are written under `%LOCALAPPDATA%\HOTASBridge\Backups\Deployment`.
 
+If previous application files cannot be copied, setup retries with profiles, settings, and workspace data only. If that retry also fails, the failure is logged and setup continues with Inno Setup's transaction rollback protection. A failed optional backup therefore does not prevent repairing or overwriting an existing installation. HOTASBridge should be closed when prompted so setup can replace active binaries; uninstalling the previous version is not required.
+
 An existing installation with settings, profiles, or workspace data does not open First Run Setup automatically. The wizard remains available from **About**.
 
 ## Uninstall
