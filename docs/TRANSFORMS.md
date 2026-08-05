@@ -55,9 +55,11 @@ Supported curve types are Linear, Exponential, Logarithmic, S-Curve, and Custom 
 -1:-1;-0.5:-0.2;0:0;0.5:0.2;1:1
 ```
 
-`AxisCurvesView` first selects a device and then one of that device's axes. Its fixed-square preview displays raw input, processed output, live position, deadzone, inversion, sensitivity, and curve shape without stretching when the workspace is resized. The graph receives current unsaved controls as preview values.
+`AxisCurvesView` first selects a device and then one of that device's axes. Its fixed-square preview displays raw input, processed output, live position, deadzone, inversion, sensitivity, and curve shape without stretching when the workspace is resized. The graph receives current unsaved controls as preview values. Every slider has an editable three-decimal value field for repeatable tuning.
 
-Bipolar axes may optionally use independent negative and positive side settings. Each side owns its inner deadzone, outer deadzone, sensitivity, and curve. Side selection is based on the physical value before inversion, so inversion flips the finished response without swapping the settings the user assigned to each physical direction.
+The editor displays Negative and Positive settings together with one shared curve type. The chain control links the numeric deadzone, exponent, S-curve strength, and sensitivity values so changing either side updates both. Breaking the chain enables independent numeric values while preserving one curve family for the whole axis. Relinking uses the most recently edited side. Runtime side selection still occurs from the physical value before inversion, so inversion flips the finished response without swapping directional settings.
+
+When Custom Control Points is active, clicking empty graph space adds a point, dragging moves it, and right-clicking removes it while at least two points remain. Every handle displays its exact normalized input/output coordinates to three decimals. In independent mode, the graph chooses the directional curve automatically: points on the left edit the negative side and points on the right edit the positive side.
 
 Independent sides are disabled by default. Existing profiles continue to use the symmetric `AxisProcessingSettings` fields unchanged. Saving explicitly updates only that axis mapping's generated compatibility descriptors. General transform order and settings are managed in Transform Editor.
 

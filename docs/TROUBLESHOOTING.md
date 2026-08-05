@@ -15,6 +15,9 @@ The app may warn when a physical device and a virtual copy are both selected. Th
 ## Virtual Xbox controller is not visible in games
 
 HOTASBridge creates the virtual Xbox 360 controller only while mapping is running and only when the ViGEmBus driver is installed. Open **About > Open Setup Wizard**, verify the driver step, and choose **Install Driver** if needed. Installation is never silent: approve Windows elevation, complete the visible ViGEmBus installer, return to the wizard, and verify again before starting mapping.
+### Experimental HIDMaestro Xbox controller is not visible
+
+Xbox-family output is disabled by default. Enable **Settings > Features > Xbox Family Output**, restart HOTASBridge, then open **Output Monitor** and use **Install / Repair Xbox Driver**. Approve Windows elevation, choose the controller identity while mapping is stopped, select Xbox Family output for the active profile, and start mapping. Only one Xbox backend can be active for a profile; switch back to Xbox 360 if the target game does not accept the experimental backend.
 
 ## Logs and profiles
 

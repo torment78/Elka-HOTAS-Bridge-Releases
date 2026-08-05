@@ -2,22 +2,22 @@
 
 `HOTASBridge.iss` is the source-controlled Inno Setup 6 package definition.
 
-Build an explicitly unsigned developer package with:
+Build an explicitly unsigned development-channel installer and portable ZIP with:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
+.\scripts\Build-DevArtifacts.ps1 -Version 0.29.0 -Iteration 1
 ```
 
 Build a fail-closed signed release from a code-signing certificate already installed in the Windows certificate store:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.29.0 -ReleaseChannel Stable `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -RequireSigning
 ```
 
-The script publishes `win-x64`, verifies the application and bundled ViGEmBus payload, signs first-party binaries, lets Inno sign setup and its uninstaller, and writes the setup, release manifest, and SHA-256 sums to `artifacts\installer`. It never accepts or logs a private-key password.
+The installer script publishes `win-x64`, verifies the application and bundled ViGEmBus payload, optionally signs first-party binaries, and writes versioned setup metadata. `Build-DevArtifacts.ps1` adds the framework-dependent ZIP, regenerates a two-artifact manifest/checksum set, and independently verifies it. Development artifacts are explicitly unsigned. Neither script accepts or logs a private-key password.
 
 ## Safety behavior
 
@@ -33,7 +33,7 @@ The script publishes `win-x64`, verifies the application and bundled ViGEmBus pa
 
 ```powershell
 .\scripts\Verify-ReleaseArtifacts.ps1 `
-  -ManifestPath .\artifacts\installer\HOTASBridge-0.28.0-release.json `
+  -ManifestPath .\artifacts\installer\HOTASBridge-0.29.0-release.json `
   -RequireValidSignature
 ```
 

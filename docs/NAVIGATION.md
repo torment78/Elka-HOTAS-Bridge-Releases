@@ -9,18 +9,20 @@
 | 3 | Device Inspector | `DeviceInspector` |
 | 4 | Mapping Explorer | `MappingExplorer` |
 | 5 | Mapping Editor | `Mappings` |
-| 6 | Node Editor | `NodeEditor` |
-| 7 | Profiles | `Profiles` |
-| 8 | Output Monitor | `XboxOutput` |
-| 9 | Signal Flow Inspector | `SignalFlowInspector` |
-| 10 | Macro Editor | `MacroEditor` |
-| 11 | Macro Debugger | `Macros` |
-| 12 | Axis Curves | `AxisCurves` |
-| 13 | Transform Editor | `TransformEditor` |
-| 14 | Diagnostics | `Diagnostics` |
-| 15 | Project Health | `ProjectHealth` |
-| 16 | Settings | `Settings` |
-| 17 | About | `About` |
+| 6 | Head Tracking | `HeadTracking` |
+| 7 | Global PWM | `AnalogPwm` |
+| 8 | Node Editor | `NodeEditor` |
+| 9 | Profiles | `Profiles` |
+| 10 | Output Monitor | `XboxOutput` |
+| 11 | Signal Flow Inspector | `SignalFlowInspector` |
+| 12 | Macro Editor | `MacroEditor` |
+| 13 | Macro Debugger | `Macros` |
+| 14 | Axis Curves | `AxisCurves` |
+| 15 | Transform Editor | `TransformEditor` |
+| 16 | Diagnostics | `Diagnostics` |
+| 17 | Project Health | `ProjectHealth` |
+| 18 | Settings | `Settings` |
+| 19 | About | `About` |
 
 Node Editor, Macro Editor, and Macro Debugger are included while their Beta feature flags are enabled. Developer Dashboard, Performance Profiler, and Test Runner are appended only in Debug builds. Their views and ViewModels are removed from normal Release compilation.
 
@@ -32,7 +34,7 @@ Devices is rendered by the focused `DevicesView` in both interface modes. It rea
 
 Device Inspector is rendered by the focused `DeviceInspectorView` and appears as Test Inputs in Easy Mode. Its tab surface is asserted even when the active profile has no hardware devices.
 
-Easy Mode shows Dashboard, Devices, Device Inspector, Mapping Editor, Output Monitor, Profiles, Settings, and About. About is rendered by the focused `AboutView` and remains available so every user can reopen First Run Setup and read bundled third-party notices without switching to Advanced Mode. UI Automation verifies both actions from Easy Mode.
+Easy Mode shows Dashboard, Devices, Device Inspector, Mapping Editor, Head Tracking, Global PWM, Macro Editor, Output Monitor, Profiles, Settings, and About. About is rendered by the focused `AboutView` and remains available so every user can reopen First Run Setup and read bundled third-party notices without switching to Advanced Mode. UI Automation verifies both actions from Easy Mode.
 
 ## Navigation Rules
 
@@ -50,6 +52,8 @@ Easy Mode shows Dashboard, Devices, Device Inspector, Mapping Editor, Output Mon
 - Devices: discovery, search, filter, membership, enable/disable, and removal.
 - Mapping Explorer: bulk management, sorting, grouping, delete/undo, and editor entry.
 - Mapping Editor: focused `MappingEditorView` for visual input-to-output authoring and Learn Mode; its Easy preset selector is exercised by UI smoke.
+- Head Tracking: provider selection/status, live six-axis diagnostics, selected-device activation learning, Hold/Toggle/pass-through, recenter/loss behavior, and selectable pointer/simulated-movement tuning.
+- Global PWM: app-wide keyboard timing defaults and live red/green waveform preview; mapping-specific axis range remains in Mapping Editor.
 - Node Editor: graph-based editing of the same mapping model, transform chain, validation, and live flow diagnostics.
 - Macro Editor: profile-owned trigger, condition, action, repeat, and runtime-variable authoring with validation.
 - Macro Debugger: running/waiting macro state, actions, variables, scheduler timing, errors, and execution controls.

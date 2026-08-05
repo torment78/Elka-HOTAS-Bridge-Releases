@@ -16,7 +16,8 @@ No thread or task is created per mapping.
 
 | Setting | Default | Rule |
 | --- | ---: | --- |
-| `cycleDurationMilliseconds` | 100 | 2 to 60000 ms; legacy `frequencyHz` remains supported. |
+| `axisMode` | FullAxis | Full axis (-1 to +1), positive half (0 to +1), or negative half (0 to -1). |
+| `cycleDurationMilliseconds` | 100 | 1 to 60000 ms; Easy Mode exposes 1 to 1000 ms and legacy `frequencyHz` remains supported. |
 | `minimumDutyCycle` | 0 | 0 to 1 and not above maximum duty. |
 | `maximumDutyCycle` | 1 | 0 to 1. |
 | `activationThreshold` | 0.03 | Magnitude required to start PWM. |
@@ -32,7 +33,7 @@ No thread or task is created per mapping.
 | `hysteresis` | 0.01 | Suppresses insignificant duty changes. |
 | `bipolar` | false | Uses independent positive and negative keys. |
 
-Settings belong to each mapping's Analog PWM transform. Direction keys and captured scan codes belong to that mapping's output configuration. Nothing is global.
+Runtime settings belong to each mapping's Analog PWM transform. Direction keys and captured scan codes belong to that mapping's output configuration. Application settings store only the Global PWM authoring defaults; creating or updating a Global PWM mapping copies those values into that mapping.
 
 ## Guided Authoring
 
@@ -42,7 +43,17 @@ The Mapping Editor exposes Analog PWM only when all of the following are true:
 - the selected input is an analog axis;
 - Keyboard is the selected output.
 
-Enable **Analog PWM**, capture the positive-direction key, and optionally enable bipolar mode and capture a distinct negative-direction key. Balanced, Responsive, and Smooth presets provide safe starting points. Every preset copies values into the mapping editor; it is not a shared runtime object.
+Easy Mode places a **Keyboard PWM** panel with the selected input controls. Choose **Standard mapping** or **PWM mapping**. PWM mapping then provides:
+
+- **Global PWM**: use the common cycle and minimum key-down/key-up timing from the separate **PWM** navigation page.
+- **Custom PWM**: right-click the exact key on the visual keyboard to open its mapping-specific waveform editor.
+- **Full axis**: maps -1 to 0% duty, center to 50%, and +1 to 100%.
+- **Positive half**: maps center to 0% and +1 to 100%; negative movement is ignored.
+- **Negative half**: maps center to 0% and -1 to 100%; positive movement is ignored.
+
+The Global PWM page previews two square-wave cycles on a white timing grid. Red marks effective key-down time and green marks effective key-up time; at 100% duty the red interval fills the cycle and the key remains held. Double-clicking the preview slider returns its input to zero. The page intentionally exposes timing only.
+
+The custom window uses the same preview and keeps only mapping-specific axis range, timing, threshold, full-hold, and minimum-output controls. “Global” describes common authoring defaults, not shared runtime state. Saving still copies the selected values into the mapping so one key can never mutate another key's active configuration.
 
 The editor validates all settings before creating or updating a mapping. Applying PWM writes one normalized `AnalogPwm` transform, preserves unrelated transforms, selects direct mapping behavior, and keeps all key identity in the existing output configuration. Disabling PWM removes only that transform and its PWM-specific negative-key data.
 

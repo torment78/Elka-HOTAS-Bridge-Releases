@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotasbridge.local/schema/hotas-script-package-v1.schema.json",
+  "title": "HOTASBridge Script Package Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "scriptId",
+    "name",
+    "version",
+    "publisherId",
+    "requiredApiVersion",
+    "entryPoint",
+    "permissions",
+    "isolationMode"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "scriptId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "version": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "publisherId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "requiredApiVersion": { "type": "string", "minLength": 1, "maxLength": 32 },
+    "entryPoint": { "type": "string", "pattern": "^[^./\\\\][^/\\\\]*\\.lua$", "maxLength": 128 },
+    "isEnabled": { "type": "boolean", "default": true },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "ReadSignals",
+          "ReadVariables",
+          "WriteVariables",
+          "EmitOutput",
+          "ReadProfiles",
+          "ActivateProfiles",
+          "ModifyMappings",
+          "Schedule",
+          "Notify",
+          "Log"
+        ]
+      }
+    },
+    "isolationMode": { "enum": ["InProcess", "OutOfProcess"] },
+    "resourceLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maximumSourceBytes": { "type": "integer", "minimum": 1, "maximum": 4194304 },
+        "instructionsPerSlice": { "type": "integer", "minimum": 1, "maximum": 5000000 },
+        "maximumInstructionsPerInvocation": { "type": "integer", "minimum": 1, "maximum": 5000000 },
+        "allocationQuotaBytes": { "type": "integer", "minimum": 1, "maximum": 134217728 },
+        "maximumPendingEvents": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "maximumCommandsPerInvocation": { "type": "integer", "minimum": 1, "maximum": 1024 },
+        "maximumStringLength": { "type": "integer", "minimum": 1, "maximum": 1048576 }
+      }
+    }
+  }
+}

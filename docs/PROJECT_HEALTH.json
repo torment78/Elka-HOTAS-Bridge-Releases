@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "applicationVersion": "0.29.0-dev",
+  "generatedUtc": "2026-08-03T20:35:00Z",
+  "sourceRevision": "release-readiness-reconciliation-working-tree",
+  "architecture": {
+    "state": "complete",
+    "summary": "The current local Version 2 architecture is complete across all 25 milestones: Microsoft DI, typed runtime events, provider-specific input, recovery, branching graphs, macros, trusted scripting, local packages, release engineering, validation, offline AI, and governance are active. External plugin loading, untrusted script process isolation, remote AI, cloud, and network services are explicitly outside the current release scope.",
+    "completedMilestones": 25,
+    "totalMilestones": 25
+  },
+  "documentation": {
+    "completedDocuments": 20,
+    "requiredDocuments": 20,
+    "summary": "Release documents plus contribution, code-style, ADR, architecture-validation, AI, long-term vision, project-governance, and architecture-review guides are present."
+  },
+  "testCoverage": {
+    "state": "complete",
+    "linePercentage": 58.34,
+    "coveredLines": 19833,
+    "totalLines": 33995,
+    "testsPassed": 445,
+    "testsFailed": 0,
+    "scope": "Merged source-line coverage for Core, Input, Output, Infrastructure, ScriptApi, and Scripting; WPF is validated separately.",
+    "measuredUtc": "2026-08-03T20:34:41Z"
+  },
+  "hardwareCompatibility": [
+    {
+      "device": "Generic HOTAS simulation",
+      "status": "Validated",
+      "validationComplete": true,
+      "evidence": "Automated discovery, controls, mapping, recording, and playback tests."
+    },
+    {
+      "device": "Twin Engine Aircraft simulation",
+      "status": "Validated",
+      "validationComplete": true,
+      "evidence": "Automated scenario and multi-device coverage."
+    },
+    {
+      "device": "Helicopter simulation",
+      "status": "Validated",
+      "validationComplete": true,
+      "evidence": "Automated scenario and transform coverage."
+    },
+    {
+      "device": "Racing Wheel simulation",
+      "status": "Validated",
+      "validationComplete": true,
+      "evidence": "Automated scenario and axis coverage."
+    },
+    {
+      "device": "Gamepad simulation",
+      "status": "Validated",
+      "validationComplete": true,
+      "evidence": "Scripted end-to-end mapping and output regression coverage."
+    },
+    {
+      "device": "WinWing Orion 2 Stick",
+      "status": "User-validated partial",
+      "validationComplete": false,
+      "evidence": "Discovery and live controls confirmed; formal range, reconnect, and soak checklist pending."
+    },
+    {
+      "device": "WinWing Orion 2 Throttle",
+      "status": "User-validated partial",
+      "validationComplete": false,
+      "evidence": "Discovery and live controls confirmed; formal axis, detent, reconnect, and soak checklist pending."
+    },
+    {
+      "device": "ViGEm Xbox 360 output",
+      "status": "User-validated partial",
+      "validationComplete": false,
+      "evidence": "Virtual device lifecycle and mapped output confirmed; native failure counters and cleanup containment are automated, while formal joy.cpl/game acceptance remains pending."
+    }
+  ],
+  "knownIssues": [
+    {
+      "id": "KI-001",
+      "severity": "blocker",
+      "summary": "Physical HOTAS sign-off incomplete",
+      "detail": "WinWing stick and throttle still require the complete range, reconnect, sleep/resume, and long-run checklist.",
+      "targetMilestone": "0.18"
+    },
+    {
+      "id": "KI-002",
+      "severity": "blocker",
+      "summary": "Clean-machine installer acceptance pending",
+      "detail": "Certificate-backed signing and release publication have been completed without storing private credentials in source control. Clean-machine retained-upgrade, rollback, repair, and uninstall evidence is still required.",
+      "targetMilestone": "1.0"
+    },
+    {
+      "id": "KI-003",
+      "severity": "blocker",
+      "summary": "Migration rehearsal pending",
+      "detail": "Automated schema tests pass, but retained historical application builds have not completed a clean upgrade rehearsal.",
+      "targetMilestone": "0.18"
+    },
+    {
+      "id": "KI-005",
+      "severity": "warning",
+      "summary": "Long-duration performance evidence pending",
+      "detail": "Interactive latency and memory are healthy, but release-length soak and baseline comparison sessions remain outstanding.",
+      "targetMilestone": "0.18"
+    },
+    {
+      "id": "KI-006",
+      "severity": "warning",
+      "summary": "WPF code coverage is not instrumented",
+      "detail": "The 58.34 percent line measurement covers runtime assemblies; presentation behavior relies on WPF compilation and isolated startup/navigation smoke validation.",
+      "targetMilestone": "0.18"
+    },
+    {
+      "id": "KI-007",
+      "severity": "blocker",
+      "summary": "Version 1.0 formal architecture review pending",
+      "detail": "The review schedule is enforced, but Version 1.0 acceptance must wait for the release evidence, review record, and linked ADRs.",
+      "targetMilestone": "1.0"
+    }
+  ],
+  "technicalDebt": [
+    {
+      "id": "TD-026",
+      "priority": "Medium",
+      "status": "Deferred",
+      "summary": "Evaluate and hardware-validate DirectInput only where HID is insufficient."
+    },
+    {
+      "id": "TD-032",
+      "priority": "Medium",
+      "status": "Completed",
+      "summary": "Schema-v9 optional branching graphs, workspace-v3 positions, direct typed ports, deterministic logic/internal plugin nodes, diagnostics, graph-safe comparison/duplication, and viewport culling are active."
+    },
+    {
+      "id": "TD-033",
+      "priority": "High",
+      "status": "Completed trusted foundation",
+      "summary": "Signed packages, local publisher trust, explicit permissions, bounded resources, Script Workbench, and fail-closed isolation policy are active; untrusted code does not execute."
+    },
+    {
+      "id": "TD-034",
+      "priority": "Medium",
+      "status": "Completed local scope",
+      "summary": "Signed bounded profile bundles, Windows CNG local publisher identity, offline trust, screenshot previews, and conservative Thrustmaster T.A.R.G.E.T. MapKey conversion are active; online/community services are excluded."
+    },
+    {
+      "id": "TD-035",
+      "priority": "High",
+      "status": "Completed release tooling; acceptance evidence pending",
+      "summary": "Fail-closed signing, timestamps, SHA-256 manifests, independent verification, signed release publication, and disposable-machine acceptance tooling are active; clean-machine reports remain a release gate."
+    },
+    {
+      "id": "TD-043",
+      "priority": "Medium",
+      "status": "Deferred",
+      "summary": "Design remote AI consent/redaction/provider security and typed proposal-review-apply workflows before enabling generated changes."
+    },
+    {
+      "id": "TD-044",
+      "priority": "High",
+      "status": "Deferred",
+      "summary": "Define external plugin trust, permission, isolation, compatibility, update, and recovery policy before loading third-party assemblies."
+    },
+    {
+      "id": "TD-045",
+      "priority": "High",
+      "status": "Deferred",
+      "summary": "Add a separately monitored process host and interactive step debugger before enabling untrusted script packages."
+    },
+    {
+      "id": "TD-046",
+      "priority": "Medium",
+      "status": "Deferred",
+      "summary": "Add WinWing SimAppPro, Logitech, Virpil, or VKB converters only when official schemas or representative user-approved fixtures support deterministic tests."
+    },
+    {
+      "id": "TD-047",
+      "priority": "Medium",
+      "status": "Deferred pending maintained driver evidence",
+      "summary": "Do not bundle or emit vJoy output until an explicit use case and a maintained, signed driver package pass the supported-Windows compatibility and clean-machine matrix. Existing vJoy input discovery remains supported."
+    }
+  ],
+  "manualValidation": [
+    {
+      "area": "Debug and Release builds",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Both Chapter 25 configurations build with zero warnings and zero errors."
+    },
+    {
+      "area": "Stable SDK and runtime policy",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Stable .NET SDK 10.0.302 is installed and pinned with preview roll-forward disabled; the framework-dependent package requires the .NET 10 Desktop Runtime on supported 64-bit Windows."
+    },
+    {
+      "area": "Automated regression suite",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "445 tests pass across Core, Integration, Scripting, and Architecture Validator suites, including Project Health classification/validation, guided mapping presets, split-axis output, Easy Mode axis-curve ownership detection, stopped-runtime previews, live macro recording conversion, learned host-input triggers, sequence and ping-pong playback, macro package transfer, mouse output actions, signed profile/script package trust, tamper detection, permissions, quotas, graph runtime, and local workspace safety."
+    },
+    {
+      "area": "Profile migration tests",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Versioned profile migration, backup, and deletion persistence tests pass."
+    },
+    {
+      "area": "Safe startup and coordinated shutdown",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Isolated fresh, existing locked Easy/Advanced, signed Profile package, Macro Editor, Node Editor, Script Workbench, Diagnostics, and Safe Mode WPF startup/navigation smoke passed with coordinated process shutdown."
+    },
+    {
+      "area": "WinWing Orion 2 Stick formal checklist",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "User validation exists; formal release evidence pending."
+    },
+    {
+      "area": "WinWing Orion 2 Throttle formal checklist",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "User validation exists; formal release evidence pending."
+    },
+    {
+      "area": "ViGEm Xbox output acceptance",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "Lifecycle confirmed; formal Windows/game acceptance record pending."
+    },
+    {
+      "area": "Keyboard output acceptance",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "Automated state and SendInput integration tests pass; application-level manual check pending."
+    },
+    {
+      "area": "Clean-machine installer and uninstall",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "A certificate-backed signed release was produced and published; release-manifest positive/negative self-tests pass. Disposable clean-machine install, retained-upgrade, repair, rollback, and uninstall acceptance remains pending."
+    },
+    {
+      "area": "Historical build migration rehearsal",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "Retained-build rehearsal pending."
+    },
+    {
+      "area": "Long-duration runtime soak",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "Profiler support exists; release session pending."
+    },
+    {
+      "area": "Architecture validation",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Validator reports 0 errors, 0 warnings, and 0 suggestions."
+    },
+    {
+      "area": "Chapter 25 baseline architecture review",
+      "requiredForRelease": true,
+      "completed": true,
+      "evidence": "Accepted-with-follow-ups review covers all six required areas and links ADR 0001 and ADR 0002."
+    },
+    {
+      "area": "Version 1.0 formal architecture review",
+      "requiredForRelease": true,
+      "completed": false,
+      "evidence": "Scheduled gate exists; final review waits for complete release evidence."
+    }
+  ]
+}

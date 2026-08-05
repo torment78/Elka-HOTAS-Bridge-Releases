@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotasbridge.local/schema/architecture-review-schedule-v1.schema.json",
+  "title": "HOTASBridge Architecture Review Schedule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "updatedUtc", "requiredReviewAreas", "gates"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "updatedUtc": { "type": "string", "format": "date-time" },
+    "requiredReviewAreas": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "trigger", "enforcement", "status", "requiredNow", "record", "adrs"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "title": { "type": "string", "minLength": 1 },
+          "trigger": { "type": "string", "minLength": 1 },
+          "enforcement": { "enum": ["Always", "ReleaseReady", "ProfileSchema", "Manual"] },
+          "status": { "enum": ["Planned", "Satisfied", "Superseded"] },
+          "requiredNow": { "type": "boolean" },
+          "reviewedThroughProfileSchemaVersion": { "type": "integer", "minimum": 1 },
+          "record": { "type": ["string", "null"] },
+          "adrs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

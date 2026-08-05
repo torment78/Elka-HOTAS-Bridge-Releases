@@ -7,7 +7,7 @@
 | Standard/per-user/machine-wide install | Implemented source | Inno Setup privilege override and stable AppId |
 | Portable install | Deferred | `InstallationScope.Portable` is modeled and rejected explicitly |
 | Prerequisite detection | Implemented | Installer report plus UI-independent `IDeploymentAssessmentService` |
-| Driver detection and explicit install | Implemented | Shared `IVirtualGamepadDriverService`; wizard owns the explicit action |
+| Driver detection and explicit install | Implemented | ViGEmBus remains the wizard-managed default; the feature-gated HIDMaestro backend has a separate explicit Output Monitor action |
 | Upgrade preservation and backup | Implemented | Inno pre-install hook plus versioned ZIP service/scripts |
 | Rollback | Implemented foundation | Inno transaction rollback and validated restore script |
 | Uninstall data choices | Implemented | Separate profile/settings/log/backup confirmations; preserve by default |
@@ -22,11 +22,12 @@ Deployment policy and immutable results live in `HOTASBridge.Core`. Windows and 
 | Interface | Responsibility |
 | --- | --- |
 | `IDeploymentAssessmentService` | Windows, runtime, optional driver, and privilege assessment |
-| `IVirtualGamepadDriverService` | Single ViGEmBus status and explicit bundled-installer boundary |
+| `IVirtualGamepadDriverService` | Driver-family status and explicit installation boundary for ViGEmBus or the optional HIDMaestro backend |
 | `IDeploymentBackupService` | Versioned backup and path-contained restore |
 | `IUpdateService` | Channel-aware update-check/install extension point |
 
 `OfflineUpdateService` is intentionally non-networked. It lets Settings and future update UI bind to a stable contract without implying an available service.
+HIDMaestro is not installed by the application installer. A user must enable the Beta **Xbox Family Output** feature, restart, and approve the separate elevated **Install / Repair Xbox Driver** action in Output Monitor. ViGEmBus is retained and never removed by that operation.
 
 ## Installation Flow
 
@@ -100,23 +101,23 @@ Runtime outputs are never backed up or restored. No key, Xbox button, PWM timer,
 5. Authenticode verification for a required signed build.
 6. Versioned JSON release-manifest and SHA-256 sums generation.
 
-Unsigned developer package:
+Unsigned development-channel installer and portable ZIP:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
+.\scripts\Build-DevArtifacts.ps1 -Version 0.29.0 -Iteration 1
 ```
 
 Fail-closed signed package:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.29.0 -ReleaseChannel Stable `
   -SigningCertificateThumbprint '<thumbprint>' `
   -SigningCertificateStoreLocation CurrentUser `
   -TimestampUrl 'http://timestamp.digicert.com' `
   -RequireSigning
 ```
 
-The output directory contains `HOTASBridge-0.28.0-Setup.exe`, `HOTASBridge-0.28.0-release.json`, and `HOTASBridge-0.28.0-SHA256SUMS.txt`. `Verify-ReleaseArtifacts.ps1` independently verifies the set. The scripts use a certificate already installed in the Windows certificate store and never accept private-key material or a password.
+A development build produces `HOTASBridge-0.29.0-dev.1-Setup.exe`, `HOTASBridge-0.29.0-dev.1-win-x64.zip`, a matching JSON manifest, and SHA-256 sums. `Verify-ReleaseArtifacts.ps1` independently verifies the set. Stable signing uses a certificate already installed in the Windows certificate store; no script accepts private-key material or a password.
 
 ## Package Layout
 

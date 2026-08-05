@@ -84,7 +84,8 @@ See `docs/TRANSFORM_ENGINE.md` and `docs/TRANSFORMS.md`.
 | Requirement | Status | Notes |
 | --- | --- | --- |
 | Output plugin lifecycle | Complete foundation | `IOutputPlugin` covers initialize/start/process/reset/stop/diagnostics/dispose. |
-| Existing Xbox output | Complete | ViGEm backend is preserved behind `XboxOutputPlugin`. |
+| Existing Xbox output | Complete | ViGEm Xbox 360 remains the compatibility-first default behind `XboxOutputPlugin`. |
+| Optional Xbox-family output | Beta | Feature-gated HIDMaestro uses a separately identified plugin and explicit driver setup while existing Xbox mappings remain unchanged. |
 | Keyboard output | Complete | Windows SendInput supports captured VK/scan codes, combinations, hold/toggle/pulse/repeat, bipolar PWM, and clean reset. |
 | Central scheduler | Complete | One timer loop owns all current timed output jobs. |
 | Plugin failure isolation | Complete | Manager diagnoses/resets failed plugins and continues dispatching others. |
@@ -347,12 +348,12 @@ Dependency rules:
 | Output manager | `OutputManager` through `IOutputManager` | Singleton |
 | Runtime work scheduler | `RuntimeWorkScheduler` through `IRuntimeWorkScheduler` | Singleton |
 | Output scheduler | `OutputScheduler` through `IOutputScheduler` | Singleton |
-| Output plugins | `XboxOutputPlugin`, `KeyboardOutputPlugin`, and `MouseOutputPlugin` through `IOutputPlugin` | Singleton |
-| Virtual gamepad driver | `ViGEmBusDriverService` through `IVirtualGamepadDriverService` | Singleton |
+| Output plugins | Xbox 360 and feature-gated Xbox One `XboxOutputPlugin` instances, plus `KeyboardOutputPlugin` and `MouseOutputPlugin`, through `IOutputPlugin` | Singleton |
+| Virtual gamepad drivers | `ViGEmBusDriverService` and feature-gated `HidMaestroDriverService` through `IVirtualGamepadDriverService` | Singleton |
 | Deployment assessment | `DeploymentAssessmentService` through `IDeploymentAssessmentService` | Singleton |
 | Deployment backup | `DeploymentBackupService` through `IDeploymentBackupService` | Singleton |
 | Update service | `OfflineUpdateService` through `IUpdateService` | Singleton |
-| Xbox native backend | `VirtualXboxOutputService` through `IVirtualGamepadOutput` | Singleton |
+| Xbox native backends | `VirtualXboxOutputService` (Xbox 360) and feature-gated `HidMaestroXboxOutputService` (Xbox One) through `IVirtualGamepadOutput` | Singleton |
 | Plugin catalog | `PluginCatalog` through `IPluginCatalog` | Singleton |
 | Plugin discovery | `JsonPluginManifestDiscovery` through `IPluginDiscoverySource` | Startup operation |
 | Developer dashboard | Debug-only view model consuming `IRuntimeTelemetry` | Debug-only |
@@ -764,3 +765,33 @@ flowchart LR
 `HatState` preserves raw provider data while standardizing direction and center-button metadata. `HatMappingSignalAdapter` applies mapping-owned diagonal policy before the established transform/action path. `MouseOutputPlugin` owns pointer scheduling and cleanup. Easy presets create ordinary mappings. Profile schema v9 stores the schema-v7 hat/pointer configuration, descriptor-authoritative mapping behavior, and optional branching graphs; application settings v5 store presentation/layout/provider-override preferences.
 
 The architecture decision and schema acceptance are recorded in ADR 0003 and the 2026-07 Easy Input/Output review. Physical hardware evidence remains separate from automated contract validation.
+
+## Head-Tracking Extension
+
+Head tracking is an additive side pipeline with the same output boundary:
+
+```mermaid
+flowchart LR
+    Tracking["OpenTrack UDP / LookPilot UDP or FreeTrack / TrackIR NPClient / future provider"] --> Provider["IHeadTrackingProvider"]
+    Provider --> Pose["Immutable HeadPose"]
+    Pose --> Runtime["HeadTrackingRuntime"]
+    Controls["RuntimeSignal controls"] --> Actions["ApplicationActionBindingEngine"]
+    Actions --> Runtime
+    Runtime --> Output["MoveMouseRelative OutputAction"]
+    Output --> Manager["Existing Output Manager"]
+    Manager --> Mouse["Existing Mouse plugin"]
+    UI["HeadTrackingViewModel"] --> Runtime
+```
+
+Boundary rules:
+
+- provider implementations live in Input and publish provider-neutral poses;
+- the Core runtime owns centering, tuning, smoothing, activation, recovery, diagnostics, and bounded pose delivery;
+- physical activation remains an ordinary immutable RuntimeSignal and is resolved by a generic internal application-action engine;
+- pass-through decides whether an action-bound signal continues to mapping/macro processing;
+- only Output Manager dispatch reaches the Mouse plugin and Windows SendInput;
+- WPF observes snapshots and changes profile configuration but never reads a provider directly.
+
+Profile schema v10 adds only action bindings and head-tracking configuration. All provider health, pose, activation, center, smoothing, queue, and output values remain runtime-only.
+
+OpenTrack UDP, both LookPilot interfaces, and TrackIR are available. LookPilot opentrack mode shares the loopback UDP transport; LookPilot FreeTrack mode uses the standard `FT_SharedMem` mapping behind a separate provider. TrackIR dynamically loads the user-installed NaturalPoint NPClient library, verifies its documented signature, and converts native packed frames behind the same provider boundary. All providers publish the same provider-neutral pose contract and retain distinct profile/diagnostic identities. Tobii, Webcam AI, and OpenXR use the same future provider slot. Native game head-pose and virtual-joystick outputs remain unimplemented extension points.

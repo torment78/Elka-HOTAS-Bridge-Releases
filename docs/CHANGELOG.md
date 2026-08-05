@@ -1,6 +1,51 @@
 # Changelog
 
 ## Unreleased
+- Added Build-DevArtifacts.ps1 and explicit Development/Beta/Stable installer metadata so unsigned dev releases cannot identify themselves as Stable.
+### Head Tracking
+
+- Added provider-neutral immutable six-axis `HeadPose` data and an extensible head-tracking provider catalog.
+- Added loopback OpenTrack UDP input with configurable port, bounded latest-pose buffering, malformed-packet isolation, stale-source detection, and clean cancellation.
+- Added selectable LookPilot compatibility through both its documented `opentrack` UDP protocol and native FreeTrack shared memory, with independent provider identities and setup guidance.
+- Added a native TrackIR provider that loads the installed NPClient library, validates its signatures, requests all six pose fields, detects stale/mouse-emulation states, and cleans up without bundling NaturalPoint SDK files or binaries.
+- Made repeated output selection during overlapping mapping starts idempotent while continuing to reject real plugin changes during an active session.
+- Added a Head Tracking page in Easy and Advanced modes with provider status, live pose values, activation learning, Hold/Toggle, pass-through, recenter, loss behavior, and mouse tuning.
+- Added generic profile-owned application action bindings so runtime controls can invoke internal actions without bypassing normal mappings.
+- Added selectable Absolute Position, Relative Movement, and Velocity policies through the existing Output Manager and Mouse Output plugin.
+- Added additive profile schema v10 migration and a machine-readable v10 schema for application action bindings and head-tracking configuration.
+- Added action-edge, mouse-processing, provider, runtime-dispatch, output-selection, and migration regression coverage.
+- Kept Tobii, OpenXR, native head-tracking output, and virtual-joystick output as explicit future provider/output extensions; TrackIR is now an implemented provider pending physical acceptance.
+- Physical camera/head-tracker acceptance remains pending and is not claimed by UDP fixture tests.
+
+### PlayStation Touchpad Input
+
+- Added dedicated DualShock 4 and DualSense raw HID touch parsers for their USB and Bluetooth report layouts.
+- Added stable controls for two active contacts, contact IDs, absolute positions, relative movement, lift transitions, two-finger state, and physical touchpad click.
+- Preserved the existing generic PlayStation button, axis, trigger, D-pad, Bluetooth, mapping, and output paths.
+- Added a Touchpad Quick Preset that creates ordinary profile mappings for first-finger relative X/Y mouse movement and physical click to left mouse button.
+- Reused the existing Mapping Engine and Mouse Output plugin; touch input does not inject mouse output directly.
+- Added synthetic parser, lifecycle, preset, and end-to-end relative cursor regressions for DS4 and DualSense over USB and Bluetooth.
+- Kept tap-to-click, two-finger right-click/scroll, swipe recognition, gesture macros, and layer switching deferred until their user-facing policies are specified.
+- Physical-controller acceptance remains pending and is not claimed by automated report fixtures.
+
+### Easy Mode Keyboard PWM
+
+- Added a left-side Standard/PWM mapping selector with Global and Custom PWM authoring modes, while moving common timing into a dedicated Easy Mode PWM page.
+- Added Full Axis, Positive Half, and Negative Half input ranges for single-key duty control.
+- Added a live square-wave preview with editable 1-1000 ms cycle, independent minimum key-down/key-up timing, red/green phases, continuous 100% hold, and double-click-to-zero input.
+- Added per-key custom editing by right-clicking the exact key on the visual keyboard; the popup edits a detached copy until Save.
+- Kept PWM execution in the existing Analog PWM transform, keyboard plugin, and centralized output scheduler.
+- Advanced application settings additively to schema v9; Global PWM is copied into mappings, the PlayStation touchpad input switch is persisted, and existing profiles are not rewritten.
+- Removed response-curve, curve-strength, smoothing, inversion, two-key, and preset controls from the Easy custom PWM popup; the runtime still reads existing configurations.
+
+### Curve Editor Precision And Interaction
+
+- Replaced side selection with plain Negative/Positive controls, one shared curve type, and a chain toggle that links or separates their exact numeric values.
+- Added three-decimal numeric entry for deadzones, exponent/logarithmic strength, S-curve strength, and sensitivity.
+- Added point creation, dragging, removal, coordinate labels, and graph-position side selection for Custom Control Points.
+- Corrected Mapping Editor context-menu and selected axis/hat foreground contrast, with the full analog card as the right-click target.
+- Added focused logarithmic, S-curve, and custom-coordinate processing regressions.
+
 
 ## 0.28.0 - 2026-08-03
 

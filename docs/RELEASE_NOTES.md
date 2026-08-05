@@ -1,5 +1,72 @@
 # Elka HOTAS Bridge Release Notes
 
+## 0.29.0 Dev Release 2 - Optional Xbox Family Output
+
+This is an **unsigned Windows 10/11 x64 development build** for testing the
+current `dev` branch. Windows may display an Unknown Publisher warning. It is
+not the signed Stable release and is deliberately not marked Latest on GitHub.
+
+Highlights:
+
+- Added an optional Beta Xbox-family output backend through HIDMaestro 1.4.3
+  while retaining ViGEm Xbox 360 as the default and preserving existing
+  `xbox360` mappings without profile migration.
+- Added a profile-owned controller identity selector for Xbox 360, Xbox One,
+  Xbox One S, Xbox Series X|S, Xbox Elite, and Xbox Adaptive identities.
+- Made the ViGEm and HIDMaestro Xbox backends mutually exclusive in both the
+  Output Monitor UI and Output Manager runtime safeguards.
+- Added explicit HIDMaestro driver installation or repair from Output Monitor.
+  Installation always requires confirmation and Windows elevation; the driver
+  is never installed silently.
+- Added local HIDMaestro license and third-party notices plus hardware-independent
+  conversion, routing, profile-validation, and output-selection regressions.
+
+Validation:
+
+- 512 automated tests pass with zero failures.
+- Debug and Release builds complete with zero warnings and zero errors.
+- The Development installer and portable ZIP are independently verified against
+  their generated manifest and SHA-256 checksums.
+
+The installer and ZIP require the **.NET 10 Desktop Runtime**. HIDMaestro is
+disabled by default and requires enabling **Xbox Family Output** in Features,
+restarting the application, and explicitly installing its driver. Live driver,
+Windows controller-panel, and in-game validation remain manual Dev 2 checks.
+
+## 0.29.0 Dev Release 1 - Input, Head Tracking, Curves, and PWM
+
+This is an **unsigned Windows 10/11 x64 development build** for testing the
+current `dev` branch. Windows may display an Unknown Publisher warning. It is
+not the signed Stable release and is deliberately not marked Latest on GitHub.
+
+Highlights:
+
+- Added native TrackIR input through the installed NaturalPoint NPClient
+  interface, alongside OpenTrack UDP and LookPilot UDP/FreeTrack providers.
+- Added DualShock 4 and DualSense touchpad input over USB and Bluetooth,
+  including contact movement, lift state, two-finger state, and pad click.
+- Added profile-owned head-tracking activation, recentering, diagnostics, and
+  Absolute Position, Relative Movement, and Velocity mouse modes.
+- Added Easy Mode Global and per-key custom Analog PWM authoring with live
+  waveform timing and verified keyboard-output scheduling.
+- Added precise linked or independent positive/negative curve tuning and
+  interactive custom curve points in the Easy axis editor.
+- Added repeatable Development-channel packaging that emits an unsigned
+  installer, framework-dependent ZIP, release manifest, and SHA-256 checksums.
+
+Validation:
+
+- 505 automated tests pass with zero failed or skipped.
+- Debug and Release builds complete with zero warnings and zero errors.
+- Architecture validation reports zero errors, warnings, or suggestions.
+- The isolated WPF startup/navigation and Safe Mode smoke suite passes.
+- Release artifact tooling passes one positive and seven negative safety cases.
+
+The installer and ZIP require the **.NET 10 Desktop Runtime**. ViGEmBus remains
+a separate explicit driver installation. NaturalPoint binaries are not bundled;
+TrackIR requires the official TrackIR software. Physical TrackIR and clean-machine
+acceptance remain manual release checks.
+
 ## 0.28.0 Test Release 1 - Mapping Visualization and Presets
 
 This signed Windows 10/11 x64 test release improves the Easy Mode mapping

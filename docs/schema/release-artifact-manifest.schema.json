@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotasbridge.local/schema/release-artifact-manifest.schema.json",
+  "title": "HOTASBridge Release Artifact Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "product",
+    "version",
+    "runtimeIdentifier",
+    "generatedUtc",
+    "gitCommit",
+    "signingPolicy",
+    "checksumFile",
+    "artifacts"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "product": { "const": "HOTASBridge" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)?$" },
+    "runtimeIdentifier": { "type": "string", "minLength": 1 },
+    "generatedUtc": { "type": "string", "format": "date-time" },
+    "gitCommit": { "type": "string", "minLength": 1 },
+    "signingPolicy": { "enum": ["UnsignedDevelopment", "SignedRelease"] },
+    "checksumFile": { "type": "string", "pattern": "^[^\\\\/]+$" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fileName", "length", "sha256", "authenticode"],
+        "properties": {
+          "fileName": { "type": "string", "pattern": "^[^\\\\/]+$" },
+          "length": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[A-F0-9]{64}$" },
+          "authenticode": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["status", "statusMessage", "signerSubject", "signerThumbprint", "timestampSubject"],
+            "properties": {
+              "status": { "type": "string" },
+              "statusMessage": { "type": ["string", "null"] },
+              "signerSubject": { "type": ["string", "null"] },
+              "signerThumbprint": { "type": ["string", "null"] },
+              "timestampSubject": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

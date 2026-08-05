@@ -42,19 +42,21 @@ dotnet build HOTASBridge.sln -c Release `
 
 Only `Development`, `Beta`, and `Stable` are accepted channel values.
 
-Unsigned installer candidate for local packaging checks:
+Unsigned development-channel candidate:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0
+.\scripts\Build-DevArtifacts.ps1 -Version 0.29.0 -Iteration 1
 ```
+
+This produces application version `0.29.0-dev.1`. A GitHub dev release uses tag `v0.29.0-dev.1`, targets the `dev` branch, remains visible as a normal release, and is explicitly marked non-latest.
 
 Signed promotion candidate:
 
 ```powershell
-.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.28.0 `
+.\scripts\Build-Installer.ps1 -Configuration Release -Version 0.29.0 -ReleaseChannel Stable `
   -SigningCertificateThumbprint '<thumbprint>' -RequireSigning
 .\scripts\Verify-ReleaseArtifacts.ps1 `
-  -ManifestPath .\artifacts\installer\HOTASBridge-0.28.0-release.json `
+  -ManifestPath .\artifacts\installer\HOTASBridge-0.29.0-release.json `
   -RequireValidSignature
 ```
 
@@ -95,6 +97,7 @@ A candidate cannot be promoted when any of the following is unresolved:
 - output that remains active after reset or shutdown;
 - a crash in a supported startup or mapping path;
 - an undocumented driver or runtime prerequisite;
+- an unreviewed third-party SDK/license obligation or vendor binary in the artifact;
 - an enabled feature whose implementation is incomplete;
 - performance regression outside the accepted release budget;
 - missing release notes, migration notes, or hardware test evidence.

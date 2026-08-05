@@ -34,7 +34,7 @@ The keyboard capture hook rejects events marked by HOTASBridge, `LLKHF_INJECTED`
 
 The Mapping editor supports Xbox and Keyboard output modes. Capture records shortcut text, virtual key, scan code, and Ctrl/Alt/Shift/Windows modifiers. Axis mappings may capture independent primary/positive and negative-direction shortcuts for bipolar PWM.
 
-For an axis input, the guided Analog PWM panel provides three safe presets and direct controls for mapping-owned timing, thresholds, response, smoothing, inversion, and bipolar behavior. Invalid settings or missing/identical direction keys are reported before the mapping can be applied. Ordinary digital keyboard mappings never expose PWM controls.
+For an axis input, Easy Mode provides Standard/PWM selection in the left mapping panel. Global PWM reads common timing from the separate **PWM** page; Custom PWM opens a mapping-specific waveform editor by right-clicking the selected visual keyboard key. Full-axis, positive-half, and negative-half modes determine which axis range drives duty. The preview uses red for key-down and green for key-up, becomes a continuous hold at 100% duty, and returns to zero input on double-click. Invalid settings or missing/identical direction keys are reported before the mapping can be applied. Ordinary digital keyboard mappings never expose PWM controls.
 
 The dialog supports single modifier keys and multiple-modifier shortcuts. Clear removes the editor assignment. Duplicate enabled shortcuts in the active profile produce a warning before confirmation and are never silently changed.
 

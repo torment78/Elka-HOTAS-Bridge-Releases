@@ -21,6 +21,8 @@ The Debug dashboard, profiler, and test runner retain compile-time `DEBUG` exclu
 | Key | Stage | Default | Startup boundary |
 | --- | --- | --- | --- |
 | `keyboard-output` | Stable | On | Keyboard output plugin composition |
+| `mouse-output` | Stable | On | Mouse output plugin composition |
+| `xbox-one-output` | Beta | Off | Optional HIDMaestro driver status, Xbox-family identity selector, and output plugin composition |
 | `analog-pwm` | Stable | On | Keyboard PWM scheduler path |
 | `signal-flow-inspector` | Beta | On | Inspector sampling and navigation |
 | `recording` | Beta | On | Debug Test Runner recording commands |
@@ -36,7 +38,7 @@ The Debug dashboard, profiler, and test runner retain compile-time `DEBUG` exclu
 | `test-runner` | DebugOnly | On in Debug | Debug navigation |
 | `ai-assistant` | Beta | On | Offline AI Explain service and five evidence-backed entry points |
 
-Xbox output is the baseline product output and is not optional in this milestone. Safe Mode remains an operational recovery policy rather than a development feature flag.
+Xbox 360 output is the baseline product output. The optional Xbox-family backend is independently feature-gated and disabled by default. Safe Mode remains an operational recovery policy rather than a development feature flag.
 
 ## Persistence
 

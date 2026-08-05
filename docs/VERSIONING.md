@@ -14,7 +14,7 @@ MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
 - PRERELEASE identifies Development, Beta, or release-candidate artifacts.
 - BUILD identifies source provenance, normally the Git commit.
 
-The current development baseline is `0.28.0-dev`. The `0.x` line may evolve quickly, but profile/settings migrations remain mandatory.
+The current development baseline is `0.29.0-dev`. The `0.x` line may evolve quickly, but profile/settings migrations remain mandatory.
 
 ## Central Build Properties
 
@@ -22,11 +22,11 @@ The current development baseline is `0.28.0-dev`. The `0.x` line may evolve quic
 
 | Property | Default | Meaning |
 | --- | --- | --- |
-| `HotasBridgeVersionPrefix` | `0.28.0` | Product semantic version without suffix |
+| `HotasBridgeVersionPrefix` | `0.29.0` | Product semantic version without suffix |
 | `HotasBridgeReleaseChannel` | `Development` | Development, Beta, or Stable policy |
 | `VersionSuffix` | `dev` for Development, `beta` for Beta | Prerelease identifier |
-| `AssemblyVersion` | `0.28.0.0` | CLR assembly identity |
-| `FileVersion` | `0.28.0.0` | Windows file version |
+| `AssemblyVersion` | `0.29.0.0` | CLR assembly identity |
+| `FileVersion` | `0.29.0.0` | Windows file version |
 | `InformationalVersion` | SDK-generated | Product version plus source revision |
 
 CI sets deterministic/continuous-integration metadata. The source revision is included in ProductVersion when available.
@@ -37,7 +37,7 @@ Application, data, and extension versions solve different compatibility problems
 
 - Product version: executable release identity.
 - Profile schema/profile revision: user configuration migration.
-- Application settings schema: settings migration, currently v5.
+- Application settings schema: settings migration, currently v9.
 - Workspace schema: dock layout compatibility.
 - Recording schema: RuntimeSignal session compatibility.
 - Plugin API version: host/plugin contract negotiation.

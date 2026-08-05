@@ -3,10 +3,41 @@
 All notable release-facing HOTASBridge changes are recorded here. Detailed chapter history remains in [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
 ## Unreleased
+### Added
+- Added an optional Beta Xbox-family output backend through HIDMaestro 1.4.3. Existing `xbox360` mappings route to the profile-selected Xbox backend without profile migration; ViGEm Xbox 360 remains the default.
+- Added explicit UAC-elevated HIDMaestro install/repair from Output Monitor, local third-party license notices, mutually exclusive Xbox backend selection, and hardware-independent conversion/routing regressions. No driver is installed silently.
+- Added a profile-owned, stopped-runtime HIDMaestro identity selector for official Xbox 360, One, One S, Series X|S, Elite, and Adaptive profiles; active Xbox backend checkboxes are mutually exclusive and the inactive backend is grayed out.
+- Added repeatable unsigned Development-channel packaging with explicit assembly metadata, dev.N artifact names, a framework-dependent ZIP, manifest/checksum verification, and non-latest GitHub release guidance.
+- Added profile-owned head tracking with an extensible provider boundary, OpenTrack/LookPilot input, Hold/Toggle HOTAS activation learning, recenter and tracking-loss recovery, live diagnostics, and selectable pointer or simulated mouse movement through the existing Mouse Output plugin.
+- Added LookPilot compatibility through both its official `opentrack` UDP output and native FreeTrack shared memory, including dedicated provider choices, setup guidance, stale-source handling, and source-labelled diagnostics.
+- Added native TrackIR input through the installed NaturalPoint NPClient interface, including signature validation, six-axis conversion, near-120 Hz polling, stale/mouse-emulation diagnostics, deterministic cleanup, and hardware-free regressions; no SDK or vendor DLL is bundled.
+- Head-tracking activation can now apply a configurable 0-2000 ms settling delay before capturing the head center and recentering the Windows pointer on the foreground monitor through the existing Mouse Output plugin.
+- Added explicit Absolute Position, Relative Movement, and Velocity head-tracking mouse modes. Absolute Position now maps equal center-to-left and center-to-right motion symmetrically across the foreground monitor without speed-limited target chasing.
+- Prevented overlapping mapping starts from failing when they reapply the same active output selection; real output changes still require mapping to stop.
+- Added DualShock 4 and DualSense touchpad input over USB and Bluetooth, including two contacts, packed 12-bit positions, contact IDs, movement deltas, lift detection, two-finger state, and the physical touchpad click.
+- Added an Easy Mode PlayStation touchpad preset that maps first-finger movement to immediate relative mouse movement and the physical pad click to the left mouse button through the existing Mapping Engine and Mouse Output plugin.
+- Replaced the axis-curve side dropdown with plain Negative/Positive columns, one shared curve type, editable three-decimal values, explicit S-curve strength, and linked or independent directional tuning.
+- Added interactive custom curve points with click-to-add, drag-to-position, right-click removal, visible three-decimal coordinates, and automatic left/right side selection.
+- Added Easy Mode keyboard PWM authoring with left-side Global/Custom selection, Full/Positive/Negative axis ranges, a dedicated persisted Global PWM timing page, and per-key custom editing by right-clicking the visual keyboard.
+- Added red key-down and green key-up waveform phases, continuous-hold visualization at 100% duty, and double-click-to-zero preview sliders.
+- Advanced application settings additively to schema v9 for persisted Global PWM authoring defaults and the PlayStation touchpad input switch; profiles and existing mappings are unchanged.
+- Simplified the custom PWM popup by removing curve, smoothing, inversion, bipolar, and preset controls while retaining existing-profile compatibility in the runtime model.
+
+### Fixed
+- Corrected Mapping Editor context-menu and selected axis/hat text contrast, and made the full analog input card open the Curve Editor on right-click.
+- Corrected mouse preset rows that were mislabeled as `Xbox: A`; mouse mappings now show their actual pointer action.
+- Enabled full DualShock 4 Bluetooth HID reports before parsing touch samples, preventing Windows' padded minimal `01` report from being mistaken for a USB touch report.
+- Removed high-frequency HID report/button collection allocations, added a live PlayStation touchpad input switch, and kept diagnostic touch axes out of the normal Mapping Editor control list.
+- Restored all ordinary DualShock 4 and DualSense controls after full Bluetooth touch reports are activated by decoding sticks, triggers, D-pad, and the real named buttons from the extended report; supported Sony devices no longer expose descriptor-estimated button floods.
+- Made single-finger and two-finger touch modes mutually exclusive, with dedicated two-finger centroid X/Y and pinch-distance signals so a two-finger gesture cannot also drive the normal pointer mapping.
+- Mapping Editor and Mapping Explorer additions, edits, enable changes, duplicates, and deletions now save automatically to the affected profile, with pending changes flushed during shutdown.
+- Added per-profile Xbox, Keyboard, and Mouse output switches; disabled plugins no longer initialize, receive actions, or create their virtual device when mapping starts.
+
 
 ## 0.28.0 - 2026-08-03
 
 ### Added
+- Added repeatable unsigned Development-channel packaging with explicit assembly metadata, dev.N artifact names, a framework-dependent ZIP, manifest/checksum verification, and non-latest GitHub release guidance.
 - Added an Easy Mode **Split axis to Xbox triggers** preset that turns a centered bipolar axis into independent 0..1 LT/RT outputs, with the selected trigger assigned to the positive direction and both triggers neutral at center.
 - Grouped Mapping Editor Quick Presets by Hat / D-pad, Stick axis, Throttle axis, and Buttons & switches in a separate scrollable output-side card.
 - Added explicit LT/RT and Left/Right Stick preset targets, plus center-safe Direct/Inverted split-axis direction.
@@ -24,6 +55,7 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 ## 0.27.0 - 2026-07-30
 
 ### Added
+- Added repeatable unsigned Development-channel packaging with explicit assembly metadata, dev.N artifact names, a framework-dependent ZIP, manifest/checksum verification, and non-latest GitHub release guidance.
 - Restricted Advanced Mode unlocking to Debug builds, clarified its Release status in Settings, separated Easy Macro action fields to prevent overlap, and made the Mapping Editor's Saved mappings area vertically resizable.
 - Added explicit certificate/private-key ignore rules and ADR 0006, which keeps vJoy output and driver bundling deferred until a maintained signed upstream passes the supported-Windows acceptance matrix.
 - Added a persistent Easy Mode interface lock with a deliberate General Settings unlock, advanced-only settings and Macro Editor gating, and non-destructive relocking.

@@ -1,18 +1,24 @@
 # Profile Schema
 
-The active profile format is human-readable JSON. The machine-readable contract is [schema/hotas-profile-v9.schema.json](schema/hotas-profile-v9.schema.json).
+The active profile format is human-readable JSON. The machine-readable contract is [schema/hotas-profile-v10.schema.json](schema/hotas-profile-v10.schema.json).
 
 ## Version Fields
 
 | Field | Meaning |
 | --- | --- |
-| schemaVersion | Structural JSON contract. Current value: 9. |
+| schemaVersion | Structural JSON contract. Current value: 10. |
 | applicationVersion | HOTASBridge build that last saved the file. |
 | profileVersion | Per-profile revision, incremented after each persisted save. |
 
 ## Top-Level Shape
 
-Profiles store stable identity and metadata, logical device groups and selected devices, calibration, mappings, macros and variables, curves/layers, output configuration, conflict policy, and migration audit data. Runtime values, output state, timers, diagnostics, and workspace layout are never profile data.
+Profiles store stable identity and metadata, logical device groups and selected devices, calibration, mappings, macros and variables, application action bindings, head-tracking configuration, curves/layers, output configuration, conflict policy, and migration audit data. Runtime values, output state, timers, diagnostics, and workspace layout are never profile data.
+
+## Application Actions And Head Tracking
+
+Schema v10 adds `applicationActionBindings` for stable device/control bindings to internal application actions. Each binding stores its action ID, source identity, control type, Hold/Toggle activation mode, enabled state, and pass-through choice.
+
+The `headTracking` object stores provider/output selection, OpenTrack UDP port, confidence, recenter/loss policy, a bounded activation-settling delay, deadzone, smoothing, sensitivity, curve exponents, inversion, and maximum mouse velocity. Mouse output selection accepts `mouseFreeLook` (the compatibility name for Absolute Position), `relativeMouseMovement`, and `simulatedMouseMovement` (Velocity). Provider health, live pose, activation state, center pose, and processing history are never serialized.
 
 ## Mapping Shape
 
@@ -83,3 +89,4 @@ Outputs store plugin ID, display name, enabled state, and plugin configuration. 
 | 7 | Normalized hat direction/center/diagonal data and mouse pointer output settings. |
 | 8 | Generated behavior descriptors become runtime-authoritative while legacy fields remain projections. |
 | 9 | Optional versioned branching mapping graphs plus additive independent negative/positive axis settings; existing linear mappings and symmetric curves remain unchanged. |
+| 10 | Internal application action bindings and provider-neutral head-tracking configuration. |

@@ -1,0 +1,1019 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotasbridge.local/schema/hotas-profile-v8.schema.json",
+  "title": "HOTASBridge Profile Schema v8",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "applicationVersion",
+    "profileVersion",
+    "profileId",
+    "name",
+    "createdUtc",
+    "lastModifiedUtc",
+    "deviceGroups",
+    "selectedDevices",
+    "deviceCalibrations",
+    "mappings",
+    "outputs",
+    "outputConflictMode",
+    "macros",
+    "macroVariables"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 8
+    },
+    "applicationVersion": {
+      "type": "string"
+    },
+    "profileVersion": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "profileId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "createdUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastModifiedUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "targetApplication": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "lastMigratedFromSchemaVersion": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "lastMigrationUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "inputSourceMode": {
+      "type": "string"
+    },
+    "deviceGroups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deviceGroup"
+      }
+    },
+    "selectedDevices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/selectedDevice"
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    },
+    "axisCurves": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "shiftLayers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/output"
+      }
+    },
+    "outputTarget": {
+      "type": "string"
+    },
+    "outputConflictMode": {
+      "type": "string",
+      "enum": [
+        "firstWins",
+        "lastWins",
+        "highestPriority"
+      ]
+    },
+    "deviceCalibrations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deviceCalibration"
+      }
+    },
+    "macros": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/macro"
+      }
+    },
+    "macroVariables": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/macroVariable"
+      }
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "flightSimulation",
+        "spaceSimulation",
+        "racing",
+        "fps",
+        "generalGaming",
+        "accessibility",
+        "industrial",
+        "custom"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "beginner",
+        "intermediate",
+        "advanced",
+        "expert"
+      ]
+    },
+    "game": {
+      "type": "string"
+    },
+    "aircraft": {
+      "type": "string"
+    },
+    "vehicle": {
+      "type": "string"
+    },
+    "hardware": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "deviceGroup": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "selectedDevice": {
+      "type": "object",
+      "required": [
+        "stableDeviceId",
+        "displayName",
+        "deviceGroupId",
+        "isEnabled"
+      ],
+      "properties": {
+        "stableDeviceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "internalDeviceGuid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uuid"
+        },
+        "containerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serialNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "devicePath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vendorId": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "productId": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "usagePage": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "usageId": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "deviceGroupId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceKind": {
+          "type": "string"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "isConnected": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "mapping": {
+      "type": "object",
+      "required": [
+        "mappingId",
+        "deviceStableId",
+        "inputControlId",
+        "inputType",
+        "outputPluginId",
+        "outputControl",
+        "transformChain",
+        "isEnabled",
+        "name",
+        "outputControlId",
+        "outputKind",
+        "outputConfiguration",
+        "hatDiagonalBehavior",
+        "mapHatCenterButton",
+        "pointerOutput",
+        "conditions",
+        "priority",
+        "notes"
+      ],
+      "properties": {
+        "mappingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "deviceStableId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deviceDisplayName": {
+          "type": "string"
+        },
+        "inputControlId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputDisplayName": {
+          "type": "string"
+        },
+        "inputType": {
+          "type": "string"
+        },
+        "outputPluginId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputControl": {
+          "type": "string"
+        },
+        "transformChain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transform"
+          },
+          "contains": {
+            "type": "object",
+            "required": [
+              "id",
+              "type",
+              "isEnabled",
+              "settings"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "-behavior$"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "behavior",
+                  "toggle",
+                  "pulse"
+                ]
+              },
+              "isEnabled": {
+                "const": true
+              }
+            }
+          }
+        },
+        "behavior": {
+          "type": "string"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "shiftLayerId": {
+          "type": "string"
+        },
+        "axisProcessing": {
+          "type": "object"
+        },
+        "buttonProcessing": {
+          "type": "object"
+        },
+        "pulseDuration": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputControlId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputKind": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "axis",
+            "button",
+            "keyboard",
+            "pwmKeyboard",
+            "mouse"
+          ]
+        },
+        "outputConfiguration": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "hatDirection": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "centered",
+            "up",
+            "upRight",
+            "right",
+            "downRight",
+            "down",
+            "downLeft",
+            "left",
+            "upLeft",
+            null
+          ]
+        },
+        "mapHatCenterButton": {
+          "type": "boolean"
+        },
+        "hatDiagonalBehavior": {
+          "type": "string",
+          "enum": [
+            "dedicated",
+            "combined",
+            "ignore"
+          ]
+        },
+        "pointerOutput": {
+          "$ref": "#/$defs/pointerOutput"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "pointerOutput": {
+      "type": "object",
+      "required": [
+        "speed",
+        "horizontalSpeed",
+        "verticalSpeed",
+        "maximumSpeed",
+        "acceleration",
+        "accelerationCurveExponent",
+        "deadzone",
+        "initialMovementDelayMilliseconds",
+        "updateIntervalMilliseconds",
+        "timeToMaximumSpeedMilliseconds",
+        "normalizeDiagonal",
+        "invertX",
+        "invertY",
+        "slowModifierDeviceStableId",
+        "slowModifierControlId",
+        "slowMultiplier",
+        "fastModifierDeviceStableId",
+        "fastModifierControlId",
+        "fastMultiplier",
+        "wheelDelta",
+        "wheelRepeatMilliseconds"
+      ],
+      "properties": {
+        "speed": {
+          "type": "number",
+          "minimum": 1
+        },
+        "horizontalSpeed": {
+          "type": "number",
+          "minimum": 1
+        },
+        "verticalSpeed": {
+          "type": "number",
+          "minimum": 1
+        },
+        "maximumSpeed": {
+          "type": "number",
+          "minimum": 1
+        },
+        "acceleration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "accelerationCurveExponent": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "deadzone": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "initialMovementDelayMilliseconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updateIntervalMilliseconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeToMaximumSpeedMilliseconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "normalizeDiagonal": {
+          "type": "boolean"
+        },
+        "invertX": {
+          "type": "boolean"
+        },
+        "invertY": {
+          "type": "boolean"
+        },
+        "slowModifierDeviceStableId": {
+          "type": "string"
+        },
+        "slowModifierControlId": {
+          "type": "string"
+        },
+        "slowMultiplier": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fastModifierDeviceStableId": {
+          "type": "string"
+        },
+        "fastModifierControlId": {
+          "type": "string"
+        },
+        "fastMultiplier": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "wheelDelta": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "wheelRepeatMilliseconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "isEnabled",
+        "settings"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "pluginId",
+        "displayName",
+        "isEnabled",
+        "settings"
+      ],
+      "properties": {
+        "pluginId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "condition": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "operand",
+        "expectedState"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "profileActive",
+            "layerActive",
+            "shiftControlHeld",
+            "deviceConnected",
+            "toggleEnabled"
+          ]
+        },
+        "operand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedState": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "deviceCalibration": {
+      "type": "object",
+      "required": [
+        "deviceStableId",
+        "controlId",
+        "minimum",
+        "maximum",
+        "center",
+        "offset",
+        "isEnabled"
+      ],
+      "properties": {
+        "deviceStableId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "controlId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "center": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        },
+        "lastCalibratedUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macro": {
+      "type": "object",
+      "required": [
+        "macroId",
+        "name",
+        "isEnabled",
+        "trigger",
+        "conditions",
+        "actions",
+        "repeatMode",
+        "repeatCount",
+        "maximumIterations",
+        "priority"
+      ],
+      "properties": {
+        "macroId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "trigger": {
+          "$ref": "#/$defs/macroTrigger"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/macroCondition"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/macroAction"
+          }
+        },
+        "repeatMode": {
+          "type": "string",
+          "enum": [
+            "once",
+            "count",
+            "untilReleased",
+            "untilCondition",
+            "infinite"
+          ]
+        },
+        "repeatCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "repeatCondition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/macroCondition"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maximumIterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macroTrigger": {
+      "type": "object",
+      "required": [
+        "type",
+        "deviceStableId",
+        "controlId",
+        "comparison",
+        "threshold",
+        "zoneMinimum",
+        "zoneMaximum",
+        "position",
+        "direction",
+        "interval"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "buttonPress",
+            "buttonRelease",
+            "axisThreshold",
+            "axisZoneEntry",
+            "axisZoneExit",
+            "encoderRotation",
+            "switchPosition",
+            "timer",
+            "profileLoaded",
+            "deviceConnected",
+            "deviceDisconnected"
+          ]
+        },
+        "deviceStableId": {
+          "type": "string"
+        },
+        "controlId": {
+          "type": "string"
+        },
+        "comparison": {
+          "$ref": "#/$defs/macroComparison"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "zoneMinimum": {
+          "type": "number"
+        },
+        "zoneMaximum": {
+          "type": "number"
+        },
+        "position": {
+          "type": "number"
+        },
+        "direction": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "interval": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macroCondition": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "operand",
+        "comparison",
+        "value",
+        "expectedState",
+        "duration"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "profileActive",
+            "layerActive",
+            "variableValue",
+            "deviceConnected",
+            "toggleState",
+            "timeSinceLastActivation",
+            "macroRunning",
+            "outputPluginAvailable"
+          ]
+        },
+        "operand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparison": {
+          "$ref": "#/$defs/macroComparison"
+        },
+        "value": {
+          "type": "string"
+        },
+        "expectedState": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macroAction": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "controlId",
+        "numericValue",
+        "variableName",
+        "value",
+        "duration",
+        "targetId",
+        "message",
+        "conditions"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "pressXboxButton",
+            "releaseXboxButton",
+            "setXboxAxis",
+            "pressKeyboardKey",
+            "releaseKeyboardKey",
+            "delay",
+            "wait",
+            "conditionalDelay",
+            "setVariable",
+            "toggleVariable",
+            "enableMapping",
+            "disableMapping",
+            "activateProfile",
+            "showNotification"
+          ]
+        },
+        "controlId": {
+          "type": "string"
+        },
+        "numericValue": {
+          "type": "number"
+        },
+        "variableName": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "targetId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "message": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/macroCondition"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "macroVariable": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "initialValue",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "boolean",
+            "integer",
+            "float"
+          ]
+        },
+        "initialValue": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macroComparison": {
+      "type": "string",
+      "enum": [
+        "equal",
+        "notEqual",
+        "greaterThan",
+        "greaterThanOrEqual",
+        "lessThan",
+        "lessThanOrEqual"
+      ]
+    }
+  }
+}

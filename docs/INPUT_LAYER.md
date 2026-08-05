@@ -91,6 +91,7 @@ Every provider exposes:
 | Windows HID | Yes | Yes | Yes | Primary physical/virtual HOTAS provider using the existing native implementation. |
 | Raw Input | Yes | No | Generic discovery controls | Discovery-only corroboration; duplicate paths are merged in favor of HID. |
 | Simulation | Yes | Yes | Yes | Development/demo physical and virtual devices. Hidden unless demo devices are enabled. |
+| PlayStation touch | Through Windows HID | Yes | Yes | Additive DS4/DualSense USB/Bluetooth raw-report parser; standard controls retain the generic HID path. |
 | Virtual HID devices | Yes | Yes | Yes | vJoy and similar installed devices flow through Windows HID and are classified virtual. |
 | DirectInput | Deferred | Deferred | Deferred | Provider slot exists; no current backend/library is present. |
 
@@ -131,6 +132,32 @@ The composite manager derives health from discovery, provider status, and recent
 - Unsupported and Disabled: available for provider/configuration decisions.
 
 Provider and device counts, active/idle counts, enumerated controls, and provider statuses are published through `IRuntimeTelemetry`.
+
+## PlayStation Touchpad Extension
+
+Sony VID `054C` devices with supported DualShock 4 (`05C4`, `09CC`, `0BA0`) or DualSense (`0CE6`, `0DF2`) product IDs receive a stable named control catalog during ordinary HID discovery. Existing `axis-*`, `hat-1`, and `button-*` IDs and profile identity remain compatible, while descriptor-estimated phantom buttons are excluded.
+
+The touch reader consumes the same input report already read by `WindowsHidInputService`. Model-specific parsers select the USB or Bluetooth layout by report ID and length. DS4 packed historical samples are processed in order; DualSense publishes its current two-contact sample. Both decode the controller's inactive flag, seven-bit contact ID, and packed 12-bit X/Y coordinates.
+
+Bluetooth DS4 controllers initially publish a minimal `01` report without touch coordinates. If the persisted PlayStation touchpad switch is enabled, the HID reader requests full reports with Sony's standard CRC-protected output packet. Disabling the switch bypasses activation and touch parsing while ordinary HID controls continue normally.
+
+The HID reader reuses its report, usage, and button-state buffers. High report rates do not create per-packet report arrays or button collections.
+Once a controller switches to a full touch-capable packet, a model-specific raw adapter publishes the normal sticks, analog and digital triggers, D-pad, face buttons, shoulders, Share/Create, Options, stick clicks, PlayStation button, touchpad click, and DualSense microphone button. Compact reports continue through the generic Windows HID decoder.
+
+
+Each controller publishes:
+
+- `Touchpad Click`, exclusive Single-Finger Contact, and Two-Finger Contact buttons;
+- contact ID and absolute X/Y diagnostics for each physical contact;
+- single-finger pointer X/Y, two-finger centroid X/Y, and pinch-distance deltas;
+- explicit zero movement and inactive events when a finger lifts;
+- model, transport, report counter, and contact ID in signal diagnostic metadata.
+
+Only semantic gesture controls and click are offered as normal mapping choices. Raw positions, second-contact movement, and contact IDs remain diagnostic controls. A two-contact sample suppresses single-finger motion so future scrolling and zoom mappings do not also move the pointer.
+
+The controls become ordinary cached RuntimeSignals. Device Inspector, Learn Mode, Mapping Editor, profiles, recording, and diagnostics consume them through existing interfaces. No touch parser calls the mouse, keyboard, Xbox, macro, or mapping subsystems directly.
+
+See [PLAYSTATION_TOUCHPAD.md](PLAYSTATION_TOUCHPAD.md) for mapping behavior and current gesture boundaries.
 
 ## Input Learn Mode
 
@@ -186,3 +213,35 @@ The `AllowDuplicateInputProviders` Advanced setting includes correlated represen
 ### Monitoring Without Outputs
 
 Physical provider initialization and Runtime Signal Cache updates do not depend on mapping/output activation. Device Inspector, Learn Input, and curve testing can therefore run while the virtual Xbox controller and SendInput outputs remain stopped. Start Mapping activates the mapping/output lifecycle only.
+
+## Head-Tracking Provider Extension
+
+Head tracking is a separate signal source because camera/pose protocols are not Windows HID controls. The Input project owns provider implementations behind Core's `IHeadTrackingProvider`; providers publish immutable `HeadPose` samples and never map or inject output.
+
+The first transport implementation is OpenTrack-compatible UDP:
+
+- loopback-only listener with configurable port 1024-65535;
+- six little-endian doubles in OpenTrack order X, Y, Z, Yaw, Pitch, Roll;
+- malformed/non-finite packet rejection;
+- 300 ms stale-source detection;
+- cancellation and socket disposal through the provider lifecycle;
+- distinct OpenTrack UDP and LookPilot provider identities over the shared transport.
+
+The second transport is FreeTrack shared memory:
+
+- standard `FT_SharedMem` mapping and `FT_Mutext` synchronization object;
+- changed-frame detection through `DataID` at a 4 ms polling interval;
+- protocol conversion from radians/millimeters to `HeadPose` degrees/centimeters;
+- 300 ms stale-source detection and clean provider cancellation.
+
+The third transport is the NaturalPoint TrackIR client interface:
+
+- dynamically loads the user-installed `NPClient64.dll`/`NPClient.dll` from NaturalPoint's current-user registry location;
+- validates the official client signatures and registers the application window plus public SDK profile ID `1000`;
+- requests all six pose fields and polls every 8 ms without involving WPF;
+- converts packed TrackIR frames into immutable `HeadPose` values;
+- detects unchanged/stale frames, mouse-emulation conflicts, read failures, and clean cancellation.
+
+`HeadTrackingProviderCatalog` exposes OpenTrack UDP, LookPilot opentrack UDP, LookPilot FreeTrack, and TrackIR as available. Each retains a distinct provider identity and setup guidance while publishing the same immutable `HeadPose` contract. Tobii, Webcam AI, and OpenXR remain planned. A future provider supplies the same pose contract and does not require changes to mapping, WPF, or mouse output.
+
+The Head Tracking page's Learn command consumes the existing RuntimeSignal stream only for application-action activation. It listens to enabled selected-profile devices, accepts buttons/switches on a rising edge, and does not add head poses to the hardware mapping path.

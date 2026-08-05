@@ -11,13 +11,16 @@ It intentionally does not contain the Elka HOTAS Bridge source code.
 
 ## Download
 
-Open the repository's **Releases** section and select the latest test release:
+Open the repository's **Releases** section and select **Elka HOTAS Bridge
+0.29.0 Dev Release 2**:
 
-- `HOTASBridge-0.28.0-Setup.exe` - recommended installer.
-- `HOTASBridge-0.28.0-win-x64.zip` - framework-dependent portable package.
+- `HOTASBridge-0.29.0-dev.2-Setup.exe` - unsigned development installer.
+- `HOTASBridge-0.29.0-dev.2-win-x64.zip` - unsigned framework-dependent
+  portable package.
 
-This is a `0.28.0` test release for Windows 10/11 x64. It requires the
-.NET 10 Desktop Runtime.
+This is a `0.29.0-dev.2` development release for Windows 10/11 x64. It requires
+the .NET 10 Desktop Runtime and is published as a normal, non-latest GitHub
+release so testers can find it without replacing the signed stable download.
 
 Release builds focus on the stable Easy Mode workflow. Advanced Mode is under
 construction and remains available only in developer Debug builds. Compatible
@@ -25,16 +28,20 @@ internal executable and download names remain `HOTASBridge`.
 
 ## Package Trust
 
-The installer and all first-party Elka HOTAS Bridge executable files are
-Authenticode-signed by Mikael Frisberg and timestamped by SSL.com.
+Dev 2 is deliberately unsigned. Windows may display an **Unknown Publisher**
+warning. Use the SHA-256 checksum file attached to the release to verify the
+installer and ZIP before running them.
 
-The ZIP format does not support Windows Authenticode. The ZIP contains the same
-signed application binaries and is covered by the published SHA-256 checksum.
-Use `HOTASBridge-0.28.0-SIGNED-SHA256SUMS.txt` to verify both downloads.
+The signed `0.28.0` test release remains available separately for users who do
+not need the Dev 2 features.
 
 The bundled ViGEmBus installer retains its original valid signature from
 Nefarius Software Solutions. Elka HOTAS Bridge detects the virtual Xbox driver and
 never installs or removes it silently.
+
+Dev 2 also contains the optional HIDMaestro Xbox-family backend. It is disabled
+by default. Its driver is installed or repaired only after explicit confirmation
+from Output Monitor and a Windows elevation prompt.
 
 ## Start Here
 
@@ -54,5 +61,5 @@ never installs or removes it silently.
 
 ## Important
 
-Elka HOTAS Bridge is still a test release. Back up important profiles before
-upgrading and review the release notes and known limitations before use.
+Elka HOTAS Bridge Dev 2 is a development build. Back up important profiles
+before upgrading and review the release notes and known limitations before use.

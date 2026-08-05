@@ -19,6 +19,7 @@
 | WinWing Orion joystick/throttle | Not recorded | Vendor/Windows HID | Windows 11 user report | User-validated partial | Real controls were reported visible and working after HID normalization and identity fixes. Formal range/reconnect matrix is still required. |
 | vJoy input device | Device-specific | User-installed vJoy | Windows 10/11 | Supported foundation | Classified as virtual when path/name evidence identifies vJoy. HOTASBridge does not create vJoy output or bundle its driver; see ADR 0006. |
 | ViGEm Xbox 360 output | N/A | ViGEmBus 1.22.0 | Windows 10/11 | Driver-dependent | Virtual controller connects while mapping runs. Signed installer is bundled; native failure paths have hardware-free counter/containment coverage, while formal joy.cpl/game acceptance remains pending. |
+| NaturalPoint TrackIR camera | Not recorded | Official TrackIR software / NPClient | Windows 10/11 | Driver-dependent | Native provider, frame parser, stale handling, and lifecycle have hardware-free coverage. Physical camera, single-client, sleep/resume, and mouse-emulation acceptance remain pending; no NaturalPoint binary is bundled. |
 | HOTASBridge Generic HOTAS simulation | Built in | None | Any supported Windows | Simulated | Automated catalog and live-input coverage. |
 | Twin Engine Aircraft simulation | Built in | None | Any supported Windows | Simulated | Scripted and generated input available. |
 | Helicopter simulation | Built in | None | Any supported Windows | Simulated | Scripted and generated input available. |

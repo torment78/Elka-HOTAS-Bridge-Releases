@@ -1,0 +1,84 @@
+{
+  "$schema": "../schema/architecture-review-schedule-v1.schema.json",
+  "schemaVersion": 1,
+  "updatedUtc": "2026-07-20T18:00:00.0000000Z",
+  "requiredReviewAreas": [
+    "performance",
+    "maintainability",
+    "public-apis",
+    "plugin-interfaces",
+    "runtime-diagnostics",
+    "backward-compatibility"
+  ],
+  "gates": [
+    {
+      "id": "chapter-25-baseline",
+      "title": "Current foundation retrospective",
+      "trigger": "Adoption of Chapter 25 governance",
+      "enforcement": "Always",
+      "status": "Satisfied",
+      "requiredNow": true,
+      "record": "docs/architecture-reviews/2026-07-chapter-25-baseline.md",
+      "adrs": [
+        "docs/adr/0001-preserve-runtime-foundations.md",
+        "docs/adr/0002-formal-architecture-review-gates.md"
+      ]
+    },
+    {
+      "id": "version-1-release",
+      "title": "Version 1.0 architecture acceptance",
+      "trigger": "Before Version 1.0 is declared release-ready",
+      "enforcement": "ReleaseReady",
+      "status": "Planned",
+      "requiredNow": false,
+      "record": null,
+      "adrs": []
+    },
+    {
+      "id": "external-plugin-sdk",
+      "title": "Supported external Plugin SDK",
+      "trigger": "Before external assemblies are loaded or public external-plugin compatibility is promised",
+      "enforcement": "Manual",
+      "status": "Planned",
+      "requiredNow": false,
+      "record": null,
+      "adrs": []
+    },
+    {
+      "id": "node-editor-expansion",
+      "title": "Branching Node Editor architecture",
+      "trigger": "Before branching graph persistence, plugin nodes, or promotion beyond the reviewed Beta foundation",
+      "enforcement": "Manual",
+      "status": "Satisfied",
+      "requiredNow": false,
+      "record": "docs/architecture-reviews/2026-07-branching-node-editor-schema-v9.md",
+      "adrs": [
+        "docs/adr/0005-optional-branching-graphs.md"
+      ]
+    },
+    {
+      "id": "scripting-engine-promotion",
+      "title": "Scripting Engine promotion",
+      "trigger": "Before promotion beyond Experimental, default enablement, or untrusted script support",
+      "enforcement": "Manual",
+      "status": "Planned",
+      "requiredNow": false,
+      "record": null,
+      "adrs": []
+    },
+    {
+      "id": "profile-schema-change",
+      "title": "Major profile schema change",
+      "trigger": "Before ProfileMigration.CurrentSchemaVersion exceeds the reviewed version",
+      "enforcement": "ProfileSchema",
+      "status": "Satisfied",
+      "requiredNow": false,
+      "reviewedThroughProfileSchemaVersion": 9,
+      "record": "docs/architecture-reviews/2026-07-branching-node-editor-schema-v9.md",
+      "adrs": [
+        "docs/adr/0004-descriptor-authoritative-mapping-behavior.md",
+        "docs/adr/0005-optional-branching-graphs.md"
+      ]
+    }
+  ]
+}

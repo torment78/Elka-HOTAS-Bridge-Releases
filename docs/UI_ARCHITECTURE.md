@@ -100,7 +100,7 @@ Light, Dark, and System modes use application-level dynamic brush resources. Sys
 
 ## Easy and Advanced Presentation
 
-`NavigationViewModel` owns the visible destination collection, selected item, null-safe page key, Easy/Advanced rebuilds, and the command shared by the sidebar and quick actions. The tested Core `InterfacePresentationPolicy` defines Easy and Advanced destination catalogs plus feature requirements; the App filters those requirements through `IFeatureFlagService`. `MainViewModel` retains only page-entry effects such as refreshing diagnostics. Easy Mode shows Home, Input Devices, Test Inputs, Mappings, Outputs, Profiles, Settings, and About. Both modes resolve the same `HotasProfile`, mappings, Runtime Signal Cache, and runtime services. About remains common so setup recovery and offline third-party notices are always reachable.
+`NavigationViewModel` owns the visible destination collection, selected item, null-safe page key, Easy/Advanced rebuilds, and the command shared by the sidebar and quick actions. The tested Core `InterfacePresentationPolicy` defines Easy and Advanced destination catalogs plus feature requirements; the App filters those requirements through `IFeatureFlagService`. `MainViewModel` retains only page-entry effects such as refreshing diagnostics. Easy Mode shows Home, Input Devices, Test Inputs, Mappings, PWM, Macros, Outputs, Profiles, Settings, and About. Both modes resolve the same `HotasProfile`, mappings, Runtime Signal Cache, and runtime services. About remains common so setup recovery and offline third-party notices are always reachable.
 
 Fresh and upgraded installations lock the presentation to Easy Mode. General Settings provides the deliberate owner action that unlocks Advanced Mode and exposes the mode selector, advanced settings, diagnostics, and editor controls. Locking it again immediately rebuilds Easy navigation. Switching or locking modes never edits a profile. Easy Mode displays a notice only when a profile contains custom transforms, conditions, macros, or non-default layers that its simplified editor cannot edit. Those mappings remain active and persisted.
 
@@ -147,3 +147,11 @@ New definitions are disabled by default. Delete remains confirmed and non-destru
 ### Output Monitor
 
 The dedicated Outputs page, not the dashboard, owns full generated-state visuals. Profile-enabled Xbox, keyboard, and mouse panels are filtered through `OutputProfileUsage` and can collapse independently. All state comes from `IOutputManager` diagnostics.
+
+### Head Tracking
+
+`HeadTrackingViewModel` owns profile-backed provider/output selection, activation learning, Hold/Toggle/pass-through, recenter/loss policy, tuning, status text, and throttled runtime snapshot presentation. It depends only on the provider catalog, head-tracking runtime, application action engine, active profile/signal delegates, save queue, and UI dispatcher.
+
+`HeadTrackingView` presents Source, Activation, Live Pose, and selectable Absolute Position, Relative Movement, and Velocity tuning. Maximum velocity is shown only for Velocity mode. The view never reads UDP/shared memory, physical hardware, or the Mouse Output plugin. Learn mode accepts only selected-profile button/switch RuntimeSignals already delivered by the input layer.
+
+The page is available in Easy and Advanced catalogs because configuration does not require exposing Advanced mapping internals. Planned providers remain visibly unavailable rather than silently falling back to another source.

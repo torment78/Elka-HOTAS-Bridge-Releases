@@ -6,7 +6,8 @@
 | --- | --- |
 | Independent output plugins | Complete foundation. `IOutputPlugin` defines common lifecycle, batch action processing, reset, diagnostics, and disposal. |
 | Output Manager lifecycle ownership | Complete. Manager initializes, starts, dispatches, resets, stops, monitors, and disposes every registered plugin. |
-| Existing Xbox output preserved | Complete. ViGEm implementation is wrapped by `XboxOutputPlugin`; native driver/client code was not replaced. |
+| Existing Xbox output preserved | Complete. ViGEm implementation remains the stable default behind `XboxOutputPlugin`; native driver/client code was not replaced. |
+| Optional Xbox-family output | Beta. HIDMaestro is feature-gated, explicitly installed, independently diagnosed, and selected per profile without rewriting existing Xbox mappings. |
 | Keyboard SendInput output | Complete. Captured scan codes, injected-event filtering, combinations, repeat, and mapping-owned bipolar PWM are supported. |
 | Central scheduler | Complete. One cooperative timer loop owns all delayed, repeating, and PWM jobs. |
 | Runtime-only output state | Complete. Xbox, held keys, active PWM/repeat jobs, rates, and errors are never serialized. |
@@ -22,10 +23,11 @@ flowchart LR
     Mapping["Mapping Engine"] --> Actions["OutputAction batch"]
     Actions --> Manager["Output Manager"]
     Manager --> Xbox["XboxOutputPlugin"]
+    Xbox --> ViGEm["ViGEm Xbox 360 (default)"]
+    Xbox --> HIDMaestro["HIDMaestro Xbox One (optional)"]
     Manager --> Keyboard["KeyboardOutputPlugin"]
     Manager --> Future["Future registered plugin"]
     Keyboard --> Scheduler["Central OutputScheduler"]
-    Xbox --> ViGEm["Existing ViGEm backend"]
     Keyboard --> SendInput["Windows SendInput"]
     Manager --> Diagnostics["Diagnostic snapshots / telemetry"]
     Diagnostics --> Monitor["Output Monitor"]
@@ -51,10 +53,12 @@ stateDiagram-v2
 
 `OutputManager.ConnectAsync` starts the scheduler, initializes each plugin once, and starts each plugin independently. `DisconnectAsync` stops plugins in reverse registration order and stops the scheduler. Lazy connect remains for compatibility when an action batch arrives before an explicit start.
 
+Before a runtime session starts, the active profile's output configuration is applied through `IOutputManager.ConfigurePlugin` and `IOutputManager.ConfigureEnabledPlugins`. Generic setting definitions let Output Monitor edit supported values without referencing HIDMaestro classes directly. Explicitly disabled plugins remain loaded for diagnostics but are not initialized, started, reset, restarted, or sent actions; disabling Xbox therefore prevents virtual-controller creation while keyboard and mouse can continue independently.
+
 ## Dispatch And Isolation
 
-1. Actions are grouped by case-insensitive plugin ID.
-2. Each loaded plugin receives one batch, preserving the existing single Xbox update per mapping batch.
+1. Actions are grouped by case-insensitive plugin ID. Logical `xbox360` actions are rewritten only at this boundary when the profile selects the Xbox-family backend.
+2. Each selected plugin receives one batch, preserving the existing single Xbox update per mapping batch.
 3. Unknown plugin IDs are logged once per action type and do not affect loaded plugins.
 4. Plugin exceptions are caught at the manager boundary, recorded in diagnostics, and followed by an isolated reset attempt.
 5. Dispatch proceeds to the remaining plugin groups.
@@ -147,3 +151,13 @@ Supported state:
 All active pointer mappings share one scheduler job. Wheel repeats use keyed scheduler jobs; no mapping owns a thread. Reset, profile change, shutdown, plugin recovery, and Emergency Release cancel movement/wheels and release every tracked button.
 
 The Output Manager can run Xbox, keyboard, and mouse concurrently. Failures remain isolated by the existing plugin boundary. Some elevated or protected applications can reject injected keyboard/mouse input; HOTASBridge does not bypass operating-system or anti-cheat protections.
+
+## Head-Tracking Mouse Output
+
+Head tracking offers **Absolute Position**, **Relative Movement**, and **Velocity**. Absolute Position emits normalized `SetMousePointerPosition` actions that map the captured center and equal opposite offsets symmetrically across the foreground monitor. Relative Movement emits only pose-change deltas. Velocity continuously derives `MoveMouseRelative` actions from distance to center and is the only mode that uses the maximum-velocity setting. Activation can additionally emit a one-shot `CenterMousePointer` action. All Windows injection remains inside the Mouse plugin; the head-tracking runtime does not call SendInput, access `MouseOutputPlugin`, or create a second pointer scheduler.
+
+Pose acquisition and diagnostics can run while mapping is stopped, but OutputAction dispatch is enabled only for an active mapping session. Start Mapping enables the gate after Output Manager starts; Stop Mapping closes it before outputs are neutralized.
+
+Enabling profile head tracking activates the mouse plugin through `OutputProfileUsage` even when the profile has no ordinary mouse mapping. Disabling or losing tracking stops new movement immediately. Output Manager reset/shutdown retains authority over injected state and plugin isolation.
+
+Native head-tracking and virtual-joystick output modes remain extension points and are not started by the current UI.

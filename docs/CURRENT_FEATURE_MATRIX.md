@@ -11,7 +11,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Current behavior documented | Complete | See `docs/MIGRATION_PLAN.md` baseline behavior section. |
 | Technical debt documented | Complete | See `docs/TECHNICAL_DEBT.md`. |
 | Existing build verified | Complete | Debug and Release builds passed with zero warnings. |
-| Existing functionality protected | Complete automated foundation | 445 automated tests protect core, deployment policy, feature policy, AI evidence/approval policy, project health, architecture rules, runtime stores and mapping coordination, Windows input/driver boundaries, graph and macro editing, signal engine/cache/pipeline, input providers/lifecycle/learn mode, device coordination, identity reconciliation, telemetry, persistence, simulation, recording/playback, mapping/output behavior, guided presets, Easy Mode axis curves, stopped-runtime previews, process-aware profile activation, plugin compatibility/discovery, scripting isolation, and output neutralization; live hardware validation remains a separate manual gate. |
+| Existing functionality protected | Complete automated foundation | 505 automated tests protect core, deployment policy, feature policy, AI evidence/approval policy, project health, architecture rules, runtime stores and mapping coordination, Windows input/driver boundaries, graph and macro editing, signal engine/cache/pipeline, input providers/lifecycle/learn mode, device coordination, identity reconciliation, telemetry, persistence, simulation, recording/playback, mapping/output behavior, guided presets, Easy Mode axis curves, stopped-runtime previews, process-aware profile activation, plugin compatibility/discovery, scripting isolation, and output neutralization; live hardware validation remains a separate manual gate. |
 | Migration strategy agreed/documented | Complete | See `docs/MIGRATION_PLAN.md`. |
 | Application dependency injection | Complete foundation | Microsoft DI registers the application service graph in a dedicated composition root; startup and shutdown ordering remain explicit. |
 | Developer Dashboard, Agent Note 001 | Complete | Debug-only diagnostics page enabled through Debug navigation only. |
@@ -21,7 +21,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | RuntimeSignal model, Agent Note 004 | Complete foundation | `RuntimeSignal` added and mapping engine consumes signals through `IMappingEngine`. |
 | Runtime Signal Engine, Chapter 3 | Complete | Input publication, immutable snapshots, ordered stages, quality/error handling, and runtime state are active. |
 | Runtime Signal Cache, Agent Note 004 | Complete | Engine-owned latest-value cache exposes read-only lookup and snapshots. |
-| Signal-native output plugins | Complete foundation | OutputAction batches route through independent Xbox and Keyboard plugins; XboxState remains a ViGEm compatibility view. |
+| Signal-native output plugins | Complete foundation | OutputAction batches route through independent Xbox, Keyboard, and Mouse plugins; ViGEm Xbox 360 remains the stable default and feature-gated HIDMaestro Xbox One is Beta. |
 | Input Device Layer, Chapter 4 | Complete foundation | Common provider manager plus discovery/profile-device and input-monitoring coordinators are active while native HID code is preserved. |
 | RuntimeSignal input publication | Complete | Input DTO conversion is internal to provider adapters. |
 | Automatic device lifecycle | Complete | Native HID topology notifications trigger debounced discovery and connected/disconnected/reconnected events; 30-second safety polling and automatic two-second degraded fallback remain active. |
@@ -87,6 +87,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | Easy/Advanced presentation | Complete foundation | Core/integration/build/manual UI | Easy navigation and presets use the same profiles/runtime; Advanced restores the complete tool surface. |
 | Visual keyboard and mouse mapping | Complete foundation | Core/integration/build/manual UI | US ANSI/Nordic data layouts, stable key identity, assignment/live states, visual mouse targets, and accessible list/capture fallbacks. |
 | Mouse output | Complete foundation | Core/integration/build/manual OS validation pending | Shared-scheduler relative movement, proportional axes, acceleration, modifiers, five buttons, two wheel axes, diagnostics, and emergency cleanup. |
+| TrackIR input | Complete native-provider foundation | Integration/build/manual hardware pending | Dynamically loads the installed NPClient library, validates signatures, receives six-axis frames, normalizes coordinates, detects stale/mouse-emulation states, and cleans up through `IHeadTrackingProvider`; no vendor SDK files are bundled. |
 | Feature flags | Complete foundation | Core/integration/Release build | Stable, Beta, Experimental, DebugOnly, and Hidden policy gates real composition/navigation boundaries and preserves disabled configuration. |
 | Virtual Xbox 360 output | Complete when driver installed | Integration test for neutralization | ViGEm-backed output creates Xbox 360 controller if ViGEmBus is installed. |
 | Bundled driver installer | Complete explicit flow | Build output/integration/smoke | Official ViGEmBus 1.22.0 EXE is bundled; installation requires wizard confirmation and visible UAC. |
@@ -123,6 +124,7 @@ This document describes the current HOTASBridge implementation as of Chapter 25,
 | WinWing Orion joystick/throttle | User-validated partial | User reported real devices are visible and input is working after HID fixes; formal validation matrix still needed. |
 | vJoy input devices | Supported discovery foundation | User-installed vJoy devices are classified as virtual when the HID path/name indicates vJoy; HOTASBridge does not bundle the driver or provide vJoy output. |
 | ViGEm virtual Xbox 360 output | Driver-dependent | Works when ViGEmBus is installed; driver was present during Chapter 2 smoke validation. |
+| NaturalPoint TrackIR camera | Driver-dependent | Native NPClient integration is implemented; physical camera/software validation and public-release license review remain pending. |
 | Simulated joystick/throttle/pedals/button box | Tested | Used by integration tests and demo mode. |
 | Thrustmaster, Virpil, VKB, Logitech, Turtle Beach | Not formally validated | Generic HID support should cover many devices; hardware-specific compatibility not yet recorded. |
 
@@ -144,3 +146,4 @@ The canonical status definitions, firmware/driver fields, five simulation entrie
 | WPF UI navigation/workspace | Isolated UI Automation plus visual review |
 | Live HID parsing | Manual/hardware only |
 | ViGEm controller creation | Manual/driver-dependent |
+| Head-tracking providers | HeadTrackingIntegrationTests, LookPilotFreeTrackHeadTrackingProviderTests, TrackIrHeadTrackingProviderTests; physical camera validation remains manual |

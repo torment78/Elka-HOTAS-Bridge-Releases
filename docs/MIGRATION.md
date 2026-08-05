@@ -2,7 +2,7 @@
 
 ## Supported Upgrade
 
-`ProfileMigration` currently upgrades schema v1 through v8 profiles to schema v9. Migration is additive and keeps the original runtime settings intact.
+`ProfileMigration` currently upgrades schema v1 through v9 profiles to schema v10. Migration is additive and keeps the original runtime settings intact.
 
 ### Schema-V9 Additive Directional Axis Fields
 
@@ -98,6 +98,15 @@ Easy macro authoring adds optional `playbackMode`, `actionGroups`, per-action `s
 5. Store graph behavior in the profile and store node positions/zoom separately in workspace schema v3.
 6. Reject invalid graph topology through validation without deleting the mapping.
 7. Set schemaVersion to 9 and record migration audit metadata.
+
+## V9 To V10 Rules
+
+1. Rehydrate absent or explicitly null `applicationActionBindings` and `headTracking` values.
+2. Default head tracking to disabled, OpenTrack UDP on port 4242, Mouse Free Look, and Stop Until Stable.
+3. Normalize provider IDs and clamp ports, confidence, deadzone, smoothing, sensitivity, curve, and maximum-speed values.
+4. Preserve every existing mapping, output, transform, graph, macro, device, curve, profile metadata value, and supported extension setting.
+5. Keep activation/toggle state, center pose, smoothing history, provider health, and mouse deltas runtime-only.
+6. Set schemaVersion to 10 and record migration audit metadata.
 ## Chapter 9 Compatibility Note
 
 Chapter 9 does not change the profile JSON shape or schema version. Existing `outputPluginId`, `outputControlId`, `outputKind`, and `outputConfiguration` fields already represent Xbox and keyboard targets. Runtime plugin health, held keys, scheduler jobs, PWM phase, rates, and errors are intentionally not migrated or persisted.
@@ -141,6 +150,14 @@ Application settings schema v6 adds `logRetentionDays`. Existing files receive t
 ## Application Settings V6 To V7
 
 Application settings schema v7 adds `advancedModeUnlocked`. Fresh and upgraded installations start in locked Easy Mode, including installations that previously saved Advanced Mode. The owner can unlock Advanced Mode from General Settings; that choice is then persisted. Locking the interface again changes only UI access and never edits profiles, mappings, macros, transforms, outputs, or runtime state.
+
+## Application Settings V7 To V8
+
+Application settings schema v8 adds `globalAnalogPwm` as application-wide authoring defaults. Missing or invalid values fall back to the Balanced timing defaults. Creating or updating a Global PWM mapping copies a detached snapshot into that mapping; migration never rewrites existing mappings, profiles, workspaces, or runtime state.
+
+## Application Settings Schema v9
+
+Application settings schema v9 adds `playStationTouchpadInputEnabled`. Existing settings default to enabled so supported controllers retain the newly available touch behavior; users may disable it live under Devices settings. This setting never changes profiles, mappings, or ordinary controller input.
 
 ## Backup Rule
 

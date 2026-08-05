@@ -58,7 +58,7 @@ Invalid mappings remain unchanged in the profile but are excluded from the activ
 Opening the Mapping Editor replays the latest Runtime Signal Cache snapshot so current physical positions are visible before new movement. Profile edits rebuild and reset the preview session. Starting mapping switches the editor to actual output-plugin diagnostics; stopping mapping reconstructs preview state from the cache.
 
 Preview state never enters the live Mapping Engine, output scheduler, output plugins, virtual-controller driver, Dashboard, or Output Monitor. This prevents preview toggles, pulses, held keys, and transform state from affecting the next live runtime session.
-Right-clicking an analog control in the Mapping Editor opens a focused modal Curve Editor for that device/control pair. It uses a detached settings copy until **Save curve** writes through `AxisCurveProfileEditor`, synchronizes matching mappings, and marks the input card with an `S` badge. The modal omits device/axis switching but preserves inversion, independent negative/positive sides, deadzones, curve type, exponent, sensitivity, reset, and live raw/processed values. Closing without saving leaves the profile unchanged.
+Right-clicking anywhere on an analog control card in the Mapping Editor opens a focused modal Curve Editor for that device/control pair. It uses a detached settings copy until **Save curve** writes through `AxisCurveProfileEditor`, synchronizes matching mappings, and marks the input card with an `S` badge. The modal omits device/axis switching but preserves inversion, one shared curve type, linked or independent negative/positive numeric settings, exact deadzones/exponents/S-curve strengths/sensitivity, draggable custom points, reset, and live raw/processed values. Closing without saving leaves the profile unchanged.
 
 
 ## Conditions
@@ -97,11 +97,19 @@ The engine emits immutable `OutputAction` records:
 | Press/Release Xbox Button | Axis/button/hat/encoder/switch to Xbox button or D-pad |
 | Press/Release Keyboard Key | Keyboard-target mapping |
 | Start/Stop PWM | PWM keyboard-target mapping |
+| Move Mouse | Scheduled hat/axis movement or immediate profile-configured relative touch movement |
+| Press/Release Mouse Button | Mouse-target digital mapping, including PlayStation touchpad click |
 | Set Plugin Value | Generic future plugin target |
 
 Each action carries mapping identity, plugin/control target, value, priority, source order, timestamp, active-contribution state, and output configuration.
 
 The Output Manager dispatches Xbox actions to the preserved ViGEm plugin and keyboard/PWM actions to the Windows SendInput plugin. Unknown generic plugin actions remain diagnosed until a matching plugin is registered.
+
+### PlayStation Touchpad Preset
+
+The Easy Mode Touchpad preset creates three normal profile mappings: first-finger Move X, first-finger Move Y, and physical touchpad click. The two axes target Mouse Horizontal/Vertical with persisted `mouseMovementMode=relative`; click targets Left Mouse Button. Relative deltas still pass through lookup, validation, the transform pipeline, conflict handling, OutputAction creation, and Output Manager dispatch.
+
+Touch delta calibration is fixed to the parser's bounded `-128..128` report-to-report range so one decoded touch pixel remains one relative mouse unit by default. The mouse plugin performs no continuing movement after the event, and finger lift publishes a neutral value. This mode does not alter scheduled HOTAS-axis or hat mouse behavior.
 
 ## Priority And Conflict Rules
 
