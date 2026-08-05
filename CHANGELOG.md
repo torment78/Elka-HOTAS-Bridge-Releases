@@ -24,6 +24,7 @@ All notable release-facing HOTASBridge changes are recorded here. Detailed chapt
 - Simplified the custom PWM popup by removing curve, smoothing, inversion, bipolar, and preset controls while retaining existing-profile compatibility in the runtime model.
 
 ### Fixed
+- Exposed Xbox Family Output (Beta) in Easy Mode Settings > Output and Output Monitor, including restart status, so Release users can enable the optional backend without the hidden Developer feature table.
 - Corrected Mapping Editor context-menu and selected axis/hat text contrast, and made the full analog input card open the Curve Editor on right-click.
 - Corrected mouse preset rows that were mislabeled as `Xbox: A`; mouse mappings now show their actual pointer action.
 - Enabled full DualShock 4 Bluetooth HID reports before parsing touch samples, preventing Windows' padded minimal `01` report from being mistaken for a USB touch report.

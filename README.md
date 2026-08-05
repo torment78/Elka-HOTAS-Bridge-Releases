@@ -14,11 +14,11 @@ It intentionally does not contain the Elka HOTAS Bridge source code.
 Open the repository's **Releases** section and select **Elka HOTAS Bridge
 0.29.0 Dev Release 2**:
 
-- `HOTASBridge-0.29.0-dev.2-Setup.exe` - unsigned development installer.
-- `HOTASBridge-0.29.0-dev.2-win-x64.zip` - unsigned framework-dependent
+- `HOTASBridge-0.29.0-dev.3-Setup.exe` - unsigned development installer.
+- `HOTASBridge-0.29.0-dev.3-win-x64.zip` - unsigned framework-dependent
   portable package.
 
-This is a `0.29.0-dev.2` development release for Windows 10/11 x64. It requires
+This is a `0.29.0-dev.3` development release for Windows 10/11 x64. It requires
 the .NET 10 Desktop Runtime and is published as a normal, non-latest GitHub
 release so testers can find it without replacing the signed stable download.
 
@@ -28,18 +28,18 @@ internal executable and download names remain `HOTASBridge`.
 
 ## Package Trust
 
-Dev 2 is deliberately unsigned. Windows may display an **Unknown Publisher**
+Dev 3 is deliberately unsigned. Windows may display an **Unknown Publisher**
 warning. Use the SHA-256 checksum file attached to the release to verify the
 installer and ZIP before running them.
 
 The signed `0.28.0` test release remains available separately for users who do
-not need the Dev 2 features.
+not need the Dev 3 features.
 
 The bundled ViGEmBus installer retains its original valid signature from
 Nefarius Software Solutions. Elka HOTAS Bridge detects the virtual Xbox driver and
 never installs or removes it silently.
 
-Dev 2 also contains the optional HIDMaestro Xbox-family backend. It is disabled
+Dev 3 also contains the optional HIDMaestro Xbox-family backend. It is disabled
 by default. Its driver is installed or repaired only after explicit confirmation
 from Output Monitor and a Windows elevation prompt.
 
@@ -61,5 +61,5 @@ from Output Monitor and a Windows elevation prompt.
 
 ## Important
 
-Elka HOTAS Bridge Dev 2 is a development build. Back up important profiles
+Elka HOTAS Bridge Dev 3 is a development build. Back up important profiles
 before upgrading and review the release notes and known limitations before use.

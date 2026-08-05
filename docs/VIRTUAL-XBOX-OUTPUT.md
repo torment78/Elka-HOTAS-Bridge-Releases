@@ -25,11 +25,11 @@ Current implementation:
 
 ## HIDMaestro Xbox-family backend
 
-1. In **Settings > Features**, enable **Xbox Family Output** and restart the application.
+1. In **Settings > Output**, enable **Xbox Family Output (Beta)** and restart the application.
 2. Open **Output Monitor** and choose **Install / Repair Xbox Driver...**.
 3. Review the warning and approve Windows elevation. HIDMaestro installs a locally trusted certificate and its user-mode virtual HID driver from payloads embedded in `HIDMaestro.Core.dll`.
 4. While mapping is stopped, choose the required **Controller identity**. The selection is stored in the active profile's existing output settings dictionary and requires no schema migration.
-5. In **Active outputs**, enable **Xbox Family Output (Experimental)**. This disables and grays out Xbox 360 output for that profile without deleting or rewriting mappings. Uncheck the active backend before switching back.
+5. In **Active outputs**, enable **Xbox Family Output (Beta)**. This disables and grays out Xbox 360 output for that profile without deleting or rewriting mappings. Uncheck the active backend before switching back.
 6. Start mapping. The selected virtual Xbox-family controller exists only while the output session is running.
 
 The identity dropdown changes the HIDMaestro profile used to create the next controller; it does not merely rename the monitor card. Identity changes are rejected while mapping is active. The install action is explicit and idempotent. Normal startup, feature enablement, profile loading, and Start Mapping never approve driver installation on the user's behalf. If the driver is missing, the plugin reports `DriverMissing` and the application continues running keyboard, mouse, and other enabled outputs.

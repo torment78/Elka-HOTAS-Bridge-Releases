@@ -1,5 +1,33 @@
 # Elka HOTAS Bridge Release Notes
 
+## 0.29.0 Dev Release 3 - Easy Mode Xbox Family Setup
+
+This is an **unsigned Windows 10/11 x64 development build** that corrects the
+Xbox Family Output setup path in Dev 2. Windows may display an Unknown Publisher
+warning. It is not the signed Stable release and is deliberately not marked
+Latest on GitHub.
+
+Highlights:
+
+- Added a dedicated **Xbox Family Output (Beta)** switch to **Settings > Output**
+  in Easy Mode.
+- Added the same always-visible enable/restart panel to the top of **Output**, so
+  the backend can be discovered even before its plugin and driver are loaded.
+- Preserved the developer-only full feature table while exposing only this
+  supported Beta opt-in to normal Release users.
+- Corrected Xbox-family labels and setup documentation from Experimental and the
+  nonexistent Settings > Features path to the actual Beta workflow.
+
+Validation:
+
+- 513 automated tests pass with zero failures.
+- Debug and Release builds complete with zero warnings and zero errors.
+- The isolated WPF smoke suite confirms the switch is visible in Easy Mode
+  Settings > Output and preserves existing Easy, Advanced, and Safe Mode flows.
+
+Enable the switch, close Elka HOTAS Bridge completely, and start it again. Then
+open **Output** to install or repair the HIDMaestro driver, choose a controller
+identity, and select the Xbox Family output for the active profile.
 ## 0.29.0 Dev Release 2 - Optional Xbox Family Output
 
 This is an **unsigned Windows 10/11 x64 development build** for testing the
@@ -29,7 +57,7 @@ Validation:
   their generated manifest and SHA-256 checksums.
 
 The installer and ZIP require the **.NET 10 Desktop Runtime**. HIDMaestro is
-disabled by default and requires enabling **Xbox Family Output** in Features,
+disabled by default and requires enabling **Xbox Family Output (Beta)** in Settings > Output,
 restarting the application, and explicitly installing its driver. Live driver,
 Windows controller-panel, and in-game validation remain manual Dev 2 checks.
 
